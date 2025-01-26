@@ -1,0 +1,21 @@
+:host {
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  #up-section,
+  #down-section {
+    display: flex;
+
+    app-sent-proposal-item-list {
+      flex: 2;
+    }
+
+    app-action-required-item-list {
+      flex: 3;
+    }
+  }
+
+
+}
