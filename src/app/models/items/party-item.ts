@@ -36,7 +36,7 @@ export class PartyItem implements Item {
     return this.ownerIds.includes(partyId);
   }
 
-  private isWithStatus(statuses: StatusEnum[]) {
+  private isWithStatus(statuses: StatusEnum[]): boolean {
     return statuses.includes(this.status);
   }
 }

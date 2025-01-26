@@ -27,8 +27,7 @@ export class ItemService {
         this.itemsSubject.next(initializedItems);
       }),
       catchError(err => throwError(() => new Error(`Error initializing items: ${err}`)))
-    )
-    .subscribe();
+    ).subscribe();
   }
 
   private storeItems(items: Item[]): void {
