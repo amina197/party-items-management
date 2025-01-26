@@ -12,7 +12,7 @@ export default [
       'dot-notation': ['error', { 'allowKeywords': false }],
       'no-console': ['error', { allow: ['error'] }],
       'no-else-return': ['error'],
-      'no-empty-function': ['error']
+      'no-empty-function': ['error', { allow: 'constructors' }]
     },
   },
   {
