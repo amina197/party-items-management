@@ -1,13 +1,24 @@
 <div id="up-section">
-  <app-readonly-item-list [partyId]="partyId()"></app-readonly-item-list>
+  <app-shared-card title="Finalized items">
+    <app-readonly-item-list [partyId]="partyId()"></app-readonly-item-list>
+  </app-shared-card>
+
 </div>
 
-<div id="down-section">
-  <app-sent-proposal-item-list [partyId]="partyId()">
-  </app-sent-proposal-item-list>
 
-  <app-action-required-item-list [partyId]="partyId()">
-  </app-action-required-item-list>
+<div id="down-section">
+  <app-shared-card title="Sent proposals waiting for approval">
+    <app-sent-proposal-item-list
+      [partyId]="partyId()"
+    ></app-sent-proposal-item-list>
+  </app-shared-card>
+
+<app-shared-card title="Items requiring action">
+  <app-action-required-item-list
+    [partyId]="partyId()"
+  ></app-action-required-item-list>
+</app-shared-card>
+
 </div>
 
 
