@@ -1,0 +1,27 @@
+<div class="table-wrapper">
+  <table class="shared-table">
+
+    <thead>
+      <tr>
+        @for (col of columns(); track col.field) {
+          <th [style.width]="col.width || 'auto'">
+            {{ col.label }}
+          </th>
+        }
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (row of data(); track row.id) {
+        <tr>
+          @for (col of columns(); track col.field) {
+            <td [style.width]="col.width || 'auto'">
+              {{ row[col.field] }}
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+
+  </table>
+</div>
