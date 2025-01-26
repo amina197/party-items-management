@@ -1,39 +1,41 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { PartyItem } from '../models/items/party-item';
 import { Item } from '../models/items/item';
+import { StatusEnum } from '../shared/enums/status.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItemService {
 
-  constructor(private http: HttpClient) {}
+  private readonly ITEMS_STORAGE_KEY = 'party_items';
+  private itemsSubject = new BehaviorSubject<PartyItem[]>([]);
+  private items$: Observable<PartyItem[]> = this.itemsSubject.asObservable();
 
-
-  public getOwnedPartyItems(partyId: number): Observable<PartyItem[]> {
-    const itemsPath = 'assets/items.json';
-    return this.http.get<Item[]>(itemsPath).pipe(
-      map(items => this.keepOwnedPartyItemsOnly(items, partyId)),
-      catchError((err) => throwError(() => new Error(`Error retrieving owned party items: ${err}`))
-    ));
+  constructor(private http: HttpClient) {
+    this.initializeItems();
   }
 
-  private keepOwnedPartyItemsOnly(items: Item[], partyId: number): PartyItem[] {
-    return items.reduce<PartyItem[]>((acc, item) => {
-
-      const partyItem = this.buildPartyItem(item);
-
-      if (partyItem.isOwnedByParty(partyId)) {
-        acc.push(partyItem);
-      }
-
-      return acc;
-    }, []);
+  private initializeItems(): void {
+    this.http.get<Item[]>('assets/items.json')
+    .pipe(
+      map(items => {
+        const initializedItems = items.map(item => this.toPartyItem(item));
+        this.storeItems(initializedItems);
+        this.itemsSubject.next(initializedItems);
+      }),
+      catchError(err => throwError(() => new Error(`Error initializing items: ${err}`)))
+    )
+    .subscribe();
   }
 
-  private buildPartyItem(item: Item): PartyItem {
+  private storeItems(items: Item[]): void {
+    localStorage.setItem(this.ITEMS_STORAGE_KEY, JSON.stringify(items));
+  }
+
+  private toPartyItem(item: Item): PartyItem {
     return new PartyItem(
       item.id,
       item.name,
@@ -42,4 +44,13 @@ export class ItemService {
       item.ownerIds
     );
   }
+
+  public getItemsByPartyAndStatus(partyId: number, statuses: StatusEnum[]): Observable<PartyItem[]> {
+    return this.items$.pipe(
+      map(items => items
+        .filter(item => item.isOwnedByPartyWithStatus(partyId, statuses))
+      )
+    );
+  }
+
 }

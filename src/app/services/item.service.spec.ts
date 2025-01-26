@@ -3,10 +3,29 @@ import { TestBed } from '@angular/core/testing';
 import { ItemService } from './item.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { StatusEnum } from '../shared/enums/status.enum';
+import { PartyItem } from '../models/items/party-item';
 
 describe('ItemService', () => {
   let service: ItemService;
   let httpMock: HttpTestingController;
+
+  const mockItems = [
+    {
+      id: 1,
+      name: 'Item 1',
+      description: 'Description 1',
+      totalCost: 100,
+      ownerIds: [1],
+    },
+    {
+      id: 2,
+      name: 'Item 2',
+      description: 'Description 2',
+      totalCost: 200,
+      ownerIds: [1, 2],
+    },
+  ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -16,36 +35,84 @@ describe('ItemService', () => {
       ]
     });
     service = TestBed.inject(ItemService);
-    httpMock = TestBed.inject(HttpTestingController)
+    httpMock = TestBed.inject(HttpTestingController);
+
+    localStorage.clear();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('Test items initialization', () => {
+    afterEach(() => httpMock.verify());
 
-  describe('Test getOwnedPartyItems method', () => {
-
-    it('should return an observable with owned party items', (done) => {
-      const mockPartyId = 1;
-      const mockItems = [
-        { id: 1, name: 'Cloud subscription', description: 'Annual cloud subscription.', totalCost: 15000, ownerIds: [1] },
-        { id: 2, name: 'Conference Room Setup', description: 'Cost of setting up the shared conference room.', totalCost: 30000, ownerIds: [2, 3] },
-        { id: 3, name: 'Project A', description: 'Expenses for Project A collaboration.', totalCost: 2000, ownerIds: [1, 2] }
-      ];
-
-      service.getOwnedPartyItems(mockPartyId).subscribe((items) => {
-        expect(items).toContainEqual(mockItems[0]);
-        expect(items).toContainEqual(mockItems[2]);
-        expect(items).not.toContainEqual(mockItems[1]);
-        done();
-      });
-
+    it('should fetch items from JSON and initialize them', () => {
       const req = httpMock.expectOne('assets/items.json');
       expect(req.request.method).toBe('GET');
+
       req.flush(mockItems);
 
-      httpMock.verify();
+      const storedItems = JSON.parse(localStorage.getItem(service['ITEMS_STORAGE_KEY'])!);
+      expect(storedItems).toHaveLength(2);
+      expect(storedItems[0].id).toBe(1);
+      expect(storedItems[1].id).toBe(2);
+    });
+
+    it('should handle errors when initializing items', () => {
+      const req = httpMock.expectOne('assets/items.json');
+      req.error(new ProgressEvent('Network error'));
+
+      expect(localStorage.getItem(service['ITEMS_STORAGE_KEY'])).toBeNull();
+    });
+  });
+
+  describe('Test getItemsByPartyAndStatus method', () => {
+    it('should filter items by partyId and status', (done) => {
+
+      const partyItems = mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
+      localStorage.setItem(service['ITEMS_STORAGE_KEY'], JSON.stringify(partyItems));
+      service['itemsSubject'].next(partyItems);
+
+      service.getItemsByPartyAndStatus(1, [StatusEnum.PENDING])
+        .subscribe(filteredItems => {
+          expect(filteredItems).toHaveLength(1);
+          expect(filteredItems[0].id).toBe(2);
+          done();
+        });
+    });
+
+    it('should return an empty array if no items match the filters', (done) => {
+      const partyItems = mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
+      localStorage.setItem(service['ITEMS_STORAGE_KEY'], JSON.stringify(partyItems));
+      service['itemsSubject'].next(partyItems);
+
+      service.getItemsByPartyAndStatus(3, [StatusEnum.FINALIZED])
+      .subscribe(filteredItems => {
+        expect(filteredItems).toHaveLength(0);
+        done();
+      });
+    });
+  });
+
+  describe('Test toPartyItem method', () => {
+    it('should convert an Item to a PartyItem', () => {
+      const item = {
+        id: 1,
+        name: 'Test Item',
+        description: 'Test Description',
+        totalCost: 500,
+        ownerIds: [1, 2],
+        status: StatusEnum.PENDING
+      };
+
+      const partyItem = service['toPartyItem'](item);
+      expect(partyItem).toBeInstanceOf(PartyItem);
+      expect(partyItem.id).toBe(item.id);
+      expect(partyItem.name).toBe(item.name);
+      expect(partyItem.description).toBe(item.description);
+      expect(partyItem.totalCost).toBe(item.totalCost);
+      expect(partyItem.ownerIds).toEqual(item.ownerIds);
     });
   });
 
