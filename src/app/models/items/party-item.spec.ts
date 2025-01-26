@@ -1,0 +1,27 @@
+import { PartyItem } from './party-item';
+
+describe('PartyItem', () => {
+  let partyItem: PartyItem;
+
+  const id = 1;
+  const name = 'Software subscription';
+  const description = 'Annual subscription to new software';
+  const totalCost = 15000;
+  const ownerIds = [1, 2];
+
+  beforeEach(() => partyItem = new PartyItem(id, name, description, totalCost, ownerIds));
+
+  it('should create an instance', () => {
+    expect(partyItem).toBeTruthy();
+  });
+
+  describe('Test isOwnedByParty method', () => {
+    it('should return true when the item is owned by the requested party', () => {
+      expect(partyItem.isOwnedByParty(2)).toBe(true);
+    });
+
+    it('should return false when the item isn\'t owned by the requested party', () => {
+      expect(partyItem.isOwnedByParty(3)).toBe(false);
+    });
+  });
+});
