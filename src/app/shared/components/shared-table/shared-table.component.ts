@@ -1,6 +1,6 @@
 import { Component, computed, input, InputSignal, Signal } from '@angular/core';
-import { TableColumn } from '../../models/table-column';
-import { RowData } from '../../models/row-data';
+import { RowData } from '../../models/table/row-data';
+import { TableColumn } from '../../models/table/table-column';
 
 @Component({
   selector: 'app-shared-table',
@@ -10,6 +10,5 @@ import { RowData } from '../../models/row-data';
 })
 export class SharedTableComponent {
 
-  data: InputSignal<RowData[]> = input.required();
   columns: InputSignal<TableColumn[]> = input.required();
 }

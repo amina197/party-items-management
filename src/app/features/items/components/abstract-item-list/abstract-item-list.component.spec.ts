@@ -1,16 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionRequiredItemListComponent } from './action-required-item-list.component';
-import { ItemService } from '../../services/item.service';
+import { AbstractItemListComponent } from './abstract-item-list.component';
 import { ComponentRef } from '@angular/core';
 import { of, throwError } from 'rxjs';
-import { PartyItem } from '../../models/items/party-item';
-import { StatusEnum } from '../../shared/enums/status.enum';
+import { PartyItem } from '../../models/party-item';
+import { ItemService } from '../../../../services/item.service';
+import { StatusEnum } from '../../../../shared/enums/status.enum';
+import { ActionRequiredItemListComponent } from '../action-required-item-list/action-required-item-list.component';
 
-describe('ActionRequiredItemListComponent', () => {
-  let component: ActionRequiredItemListComponent;
-  let componentRef: ComponentRef<ActionRequiredItemListComponent>;
-  let fixture: ComponentFixture<ActionRequiredItemListComponent>;
+
+describe('AbstractItemListComponent', () => {
+  let component: AbstractItemListComponent;
+  let componentRef: ComponentRef<AbstractItemListComponent>;
+  let fixture: ComponentFixture<AbstractItemListComponent>;
 
   const mockItemService: Partial<ItemService> = {
     getItemsByPartyAndStatus: jest.fn()
@@ -37,7 +39,7 @@ describe('ActionRequiredItemListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ActionRequiredItemListComponent],
+      imports: [AbstractItemListComponent],
       providers: [
         { provide: ItemService, useValue: mockItemService }
       ]
@@ -66,14 +68,14 @@ describe('ActionRequiredItemListComponent', () => {
         [StatusEnum.PENDING, StatusEnum.RECEIVED]
       );
 
-      expect(component.actionRequiredItems()).toEqual(mockItems);
+      expect(component.items()).toEqual(mockItems);
     });
 
     it('should handle error from itemService gracefully', () => {
       jest.spyOn(mockItemService, 'getItemsByPartyAndStatus').mockReturnValueOnce(throwError(() => new Error('Something went wrong')));
       fixture.detectChanges();
 
-      expect(component.actionRequiredItems()).toEqual([]);
+      expect(component.items()).toEqual([]);
     });
   });
 });

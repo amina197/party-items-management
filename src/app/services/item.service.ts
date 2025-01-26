@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
-import { PartyItem } from '../models/items/party-item';
-import { Item } from '../models/items/item';
 import { StatusEnum } from '../shared/enums/status.enum';
+import { Item } from '../features/items/models/item';
+import { PartyItem } from '../features/items/models/party-item';
 
 @Injectable({
   providedIn: 'root'

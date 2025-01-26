@@ -1,4 +1,4 @@
-import { StatusEnum } from '../../shared/enums/status.enum';
+import { StatusEnum } from '../../../shared/enums/status.enum';
 
 export interface Item {
   readonly id: number;

@@ -1,4 +1,5 @@
-import { StatusEnum } from '../../shared/enums/status.enum';
+
+import { StatusEnum } from '../../../shared/enums/status.enum';
 import { PartyItem } from './party-item';
 
 describe('PartyItem', () => {

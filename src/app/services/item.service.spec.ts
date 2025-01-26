@@ -4,7 +4,7 @@ import { ItemService } from './item.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { StatusEnum } from '../shared/enums/status.enum';
-import { PartyItem } from '../models/items/party-item';
+import { PartyItem } from '../features/items/models/party-item';
 
 describe('ItemService', () => {
   let service: ItemService;

@@ -1,4 +1,5 @@
-import { StatusEnum } from '../../shared/enums/status.enum';
+
+import { StatusEnum } from '../../../shared/enums/status.enum';
 import { Item } from './item';
 
 export class PartyItem implements Item {

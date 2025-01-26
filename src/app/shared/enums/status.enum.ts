@@ -1,7 +1,7 @@
 export enum StatusEnum {
-  PENDING,
-  RECEIVED,
-  SENT,
-  FINALIZED,
-  OWNED
+  PENDING = 'Send a proposal',
+  RECEIVED = 'Answer received proposal',
+  SENT = 'Waiting for approval',
+  FINALIZED = 'Proposal approved',
+  OWNED = 'Owned'
 }

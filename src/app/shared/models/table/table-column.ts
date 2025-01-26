@@ -1,5 +1,5 @@
 export interface TableColumn {
-  field: string;
+  field: any;
   label: string;
   width?: string;
 }

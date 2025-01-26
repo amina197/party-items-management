@@ -1,0 +1,32 @@
+<app-shared-table [columns]="columns">
+  @for (item of items(); track item.id) {
+    <tr>
+      @for (col of columns; track col.field) {
+        <td [style.width]="col.width || 'auto'">
+
+          @switch (col.field) {
+            @case ('status') {
+              <button (click)="onStatusClick(item)" class="status-action-btn">
+                  {{ item[col.field] }}
+              </button>
+            }
+
+            @case ('totalCost') {
+              {{ item[col.field] }}€
+            }
+
+            @case ('ownerIds') {
+              @for (owner of item.ownerIds; track owner) {
+                <span class="owner">{{ owner }}</span>
+              }
+            }
+
+            @default {
+              {{ item[col.field] }}
+            }
+          }
+        </td>
+      }
+    </tr>
+  }
+</app-shared-table>

@@ -16,20 +16,4 @@
     z-index: 1;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.2);
   }
-
-  tbody tr:nth-child(even) {
-    background-color: #f7f7f7;
-  }
-
-  tbody tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-
-  th,
-  td {
-    padding: 1em;
-    border: .1em solid #ddd;
-    text-align: left;
-    vertical-align: middle;
-  }
 }
