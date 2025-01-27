@@ -19,6 +19,7 @@ export class UserService {
 
   public setActiveUser(user: User): void {
     this.activeUserSubject.next(user);
+    this.persistActiveUser(user);
   }
 
   public getActiveUser(): Observable<User> {
@@ -38,12 +39,11 @@ export class UserService {
 
   private initializeActiveUser(users: User[]): void {
     const storedActiveUser = this.getPersistentActiveUser();
-    if (storedActiveUser && users.includes(storedActiveUser)) {
+
+    if (storedActiveUser && users.find(user => user.id === storedActiveUser.id)) {
       this.setActiveUser(storedActiveUser);
     } else {
-      const user = users[0];
-      this.persistActiveUser(user)
-      this.setActiveUser(user);
+      this.setActiveUser(users[0]);
     }
   }
 

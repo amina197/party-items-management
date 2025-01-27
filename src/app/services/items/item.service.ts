@@ -42,10 +42,7 @@ export class ItemService {
   private setInitialItems(): void {
     this.http.get<Item[]>('assets/items.json')
       .pipe(
-        tap(items => {
-          this.setItems(items);
-          this.persistItems(items);
-        }),
+        tap(items => this.setItems(items)),
         catchError(err => throwError(() => new Error(`Error initializing items: ${err}`)))
       ).subscribe();
   }
@@ -53,6 +50,7 @@ export class ItemService {
   private setItems(items: Item[]): void {
     const partyItems = this.toPartyItems(items);
     this.itemsSubject.next(partyItems);
+    this.persistItems(partyItems);
   }
 
   private getPersistentItems(): PartyItem[] | null {
