@@ -7,6 +7,7 @@ import { PartyItem } from '../../models/party-item';
 import { ItemService } from '../../../../services/items/item.service';
 import { StatusEnum } from '../../../../shared/enums/status.enum';
 import { ActionRequiredItemListComponent } from '../action-required-item-list/action-required-item-list.component';
+import { Item } from '../../models/item';
 
 
 describe('AbstractItemListComponent', () => {
@@ -15,10 +16,10 @@ describe('AbstractItemListComponent', () => {
   let fixture: ComponentFixture<AbstractItemListComponent>;
 
   const mockItemService: Partial<ItemService> = {
-    getItemsByPartyAndStatus: jest.fn()
+    getItemsByStatus: jest.fn()
   };
 
-  const mockItems = <PartyItem[]>[
+  const mockItems = <Item[]>[
     {
       id: 1,
       name: 'Item 1',
@@ -50,32 +51,54 @@ describe('AbstractItemListComponent', () => {
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
 
-    componentRef.setInput('partyId', 1);
+    componentRef.setInput('partyId', 2);
   });
+
+  afterEach(() => jest.resetAllMocks());
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   describe('Test ngOnInit method', () => {
-    it('should call itemService.getItemsByPartyAndStatus on init and set actionRequiredItems', () => {
-      jest.spyOn(mockItemService, 'getItemsByPartyAndStatus').mockReturnValueOnce(of(mockItems));
+    it('should call itemService.getItemsByStatus on init and set actionRequiredItems', () => {
+      const partyItems = getMockPartyItems(mockItems);
+      jest.spyOn(mockItemService, 'getItemsByStatus').mockReturnValueOnce(of(partyItems));
       fixture.detectChanges();
 
-      expect(mockItemService.getItemsByPartyAndStatus).toHaveBeenCalledTimes(1);
-      expect(mockItemService.getItemsByPartyAndStatus).toHaveBeenCalledWith(
-        1,
+      expect(mockItemService.getItemsByStatus).toHaveBeenCalledTimes(1);
+      expect(mockItemService.getItemsByStatus).toHaveBeenCalledWith(
         [StatusEnum.PENDING, StatusEnum.RECEIVED]
       );
 
-      expect(component.items()).toEqual(mockItems);
+      expect(component.items()).toHaveLength(2);
+      expect(component.items()).toEqual(partyItems);
     });
 
     it('should handle error from itemService gracefully', () => {
-      jest.spyOn(mockItemService, 'getItemsByPartyAndStatus').mockReturnValueOnce(throwError(() => new Error('Something went wrong')));
+      jest.spyOn(mockItemService, 'getItemsByStatus').mockReturnValueOnce(throwError(() => new Error('Something went wrong')));
       fixture.detectChanges();
 
       expect(component.items()).toEqual([]);
     });
   });
+
+  describe('Test filteredItems computation', () => {
+
+    it('should set filteredItems with owned party items only', () => {
+      const partyItems = getMockPartyItems(mockItems);
+      jest.spyOn(mockItemService, 'getItemsByStatus').mockReturnValueOnce(of(partyItems));
+
+      fixture.detectChanges();
+
+      expect(component.filteredItems()).toHaveLength(1);
+      expect(component.filteredItems()[0]).toEqual(partyItems[1]);
+      expect(component.filteredItems()[0].id).toBe(2);
+    });
+  });
 });
+
+function getMockPartyItems(mockItems: Item[]) {
+  return mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
+}
+

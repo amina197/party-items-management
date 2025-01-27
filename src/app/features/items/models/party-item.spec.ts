@@ -29,17 +29,23 @@ describe('PartyItem', () => {
     });
   });
 
-  describe('Test isOwnedByPartyWithStatus method', () => {
-    it('should return true when the item is owned by the requested party and has the right status', () => {
-      expect(partyItem.isOwnedByPartyWithStatus(2, [StatusEnum.PENDING])).toBe(true);
+  describe('Test isOwnedByParty method', () => {
+    it('should return true when the item is owned by the requested party', () => {
+      expect(partyItem.isOwnedByParty(2)).toBe(true);
     });
 
     it('should return false when the item isn\'t owned by the requested party', () => {
-      expect(partyItem.isOwnedByPartyWithStatus(3, [StatusEnum.PENDING])).toBe(false);
+      expect(partyItem.isOwnedByParty(3)).toBe(false);
+    });
+  });
+
+  describe('Test isWithStatus method', () => {
+    it('should return true has one of the requested statuses', () => {
+      expect(partyItem.isWithStatus([StatusEnum.PENDING])).toBe(true);
     });
 
-    it('should return false when the item hasn\'t the right status', () => {
-      expect(partyItem.isOwnedByPartyWithStatus(2, [StatusEnum.OWNED])).toBe(false);
+    it('should return false when the item hasn\'t one of the requested statuses', () => {
+      expect(partyItem.isWithStatus([StatusEnum.OWNED])).toBe(false);
     });
   });
 });

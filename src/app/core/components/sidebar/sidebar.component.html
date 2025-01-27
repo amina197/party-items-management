@@ -1,0 +1,37 @@
+<nav class="sidebar-container">
+  <div class="sidebar-menu">
+    <a class="menu-item" routerLink="/dashboard">Dashboard</a>
+  </div>
+
+  <div
+    class="user-section"
+    (mouseenter)="onHoverActiveUserInfo(true)"
+    (mouseleave)="onHoverActiveUserInfo(false)"
+  >
+
+  @if (activeUser()) {
+    <span class="user-name">
+      {{ activeUser().name }}
+    </span>
+  }
+
+  @if (showSwitchButton) {
+    <button
+      class="switch-btn"
+      (click)="openSwitchModal()"
+    >
+      Switch user account
+    </button>
+  }
+  </div>
+</nav>
+
+@if (isSwitchModalOpen) {
+  <app-user-switch
+    [users]="users"
+    [activeUser]="activeUser()"
+    (close)="closeSwitchModal()"
+  ></app-user-switch>
+}
+
+

@@ -1,0 +1,22 @@
+<div class="modal-overlay" (click)="onCloseModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+
+    <h2>Switch user account</h2>
+
+    <ul class="user-list">
+
+      @for (user of users; track user.id) {
+        <li (click)="onSelectUser(user)"
+            [class.active]="user.id === activeUser.id"
+        >
+          <div class="user-name">{{ user.name }}</div>
+          <div class="user-email">{{ user.email }}</div>
+          <div class="user-party">Party: {{ user.partyId }}</div>
+        </li>
+      }
+
+    </ul>
+
+    <button class="close-btn" (click)="onCloseModal()">Close</button>
+  </div>
+</div>

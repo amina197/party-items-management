@@ -21,16 +21,16 @@ export class ItemService {
     this.initializeItems();
   }
 
-  public getItemsByPartyAndStatus(partyId: number, statuses: StatusEnum[]): Observable<PartyItem[]> {
+  public getItemsByStatus(statuses: StatusEnum[]): Observable<PartyItem[]> {
     return this.items$.pipe(
       map(items => items
-        .filter(item => item.isOwnedByPartyWithStatus(partyId, statuses))
+        .filter(item => item.isWithStatus(statuses))
       )
     );
   }
 
   private initializeItems(): void {
-    const storedItems = this.getItemsFromLocalStorage();
+    const storedItems = this.getPersistentItems();
 
     if (storedItems) {
       this.setItems(storedItems);
@@ -44,7 +44,7 @@ export class ItemService {
       .pipe(
         tap(items => {
           this.setItems(items);
-          this.storeItemsInLocalStorage(items);
+          this.persistItems(items);
         }),
         catchError(err => throwError(() => new Error(`Error initializing items: ${err}`)))
       ).subscribe();
@@ -55,11 +55,11 @@ export class ItemService {
     this.itemsSubject.next(partyItems);
   }
 
-  private getItemsFromLocalStorage(): PartyItem[] | null {
+  private getPersistentItems(): PartyItem[] | null {
     return this.localStorageService.loadData(this.ITEMS_STORAGE_KEY);
   }
 
-  private storeItemsInLocalStorage(items: Item[]): void {
+  private persistItems(items: Item[]): void {
     const initializedItems = this.toPartyItems(items);
     this.localStorageService.saveData(this.ITEMS_STORAGE_KEY, initializedItems);
   }

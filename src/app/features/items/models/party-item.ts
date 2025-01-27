@@ -29,15 +29,11 @@ export class PartyItem implements Item {
     return this.ownerIds.length === 1 ? StatusEnum.OWNED : StatusEnum.PENDING;
   }
 
-  public isOwnedByPartyWithStatus(partyId: number, statuses: StatusEnum[]): boolean {
-    return this.isOwnedByParty(partyId) && this.isWithStatus(statuses);
-  }
-
-  private isOwnedByParty(partyId: number): boolean {
+  public isOwnedByParty(partyId: number): boolean {
     return this.ownerIds.includes(partyId);
   }
 
-  private isWithStatus(statuses: StatusEnum[]): boolean {
+  public isWithStatus(statuses: StatusEnum[]): boolean {
     return statuses.includes(this.status);
   }
 }

@@ -16,14 +16,14 @@ describe('ItemService', () => {
       name: 'Item 1',
       description: 'Description 1',
       totalCost: 100,
-      ownerIds: [1],
+      ownerIds: [1]
     },
     {
       id: 2,
       name: 'Item 2',
       description: 'Description 2',
       totalCost: 200,
-      ownerIds: [1, 2],
+      ownerIds: [1, 2]
     },
   ];
 
@@ -67,14 +67,14 @@ describe('ItemService', () => {
     });
   });
 
-  describe('Test getItemsByPartyAndStatus method', () => {
-    it('should filter items by partyId and status', (done) => {
+  describe('Test getItemsByStatus method', () => {
+    it('should filter items by status', done => {
 
       const partyItems = mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
       localStorage.setItem(service['ITEMS_STORAGE_KEY'], JSON.stringify(partyItems));
       service['itemsSubject'].next(partyItems);
 
-      service.getItemsByPartyAndStatus(1, [StatusEnum.PENDING])
+      service.getItemsByStatus([StatusEnum.PENDING])
         .subscribe(filteredItems => {
           expect(filteredItems).toHaveLength(1);
           expect(filteredItems[0].id).toBe(2);
@@ -82,12 +82,12 @@ describe('ItemService', () => {
         });
     });
 
-    it('should return an empty array if no items match the filters', (done) => {
+    it('should return an empty array if no items match the filters', done => {
       const partyItems = mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
       localStorage.setItem(service['ITEMS_STORAGE_KEY'], JSON.stringify(partyItems));
       service['itemsSubject'].next(partyItems);
 
-      service.getItemsByPartyAndStatus(3, [StatusEnum.FINALIZED])
+      service.getItemsByStatus([StatusEnum.FINALIZED])
       .subscribe(filteredItems => {
         expect(filteredItems).toHaveLength(0);
         done();

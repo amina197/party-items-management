@@ -37,15 +37,21 @@ export class UserService {
   }
 
   private initializeActiveUser(users: User[]): void {
-    const storedActiveUser = this.getActiveUserFromLocalStorage();
+    const storedActiveUser = this.getPersistentActiveUser();
     if (storedActiveUser && users.includes(storedActiveUser)) {
       this.setActiveUser(storedActiveUser);
     } else {
-      this.setActiveUser(users[0]);
+      const user = users[0];
+      this.persistActiveUser(user)
+      this.setActiveUser(user);
     }
   }
 
-  private getActiveUserFromLocalStorage(): User | null {
+  private persistActiveUser(user: User): void {
+    this.localStorageService.saveData(this.ACTIVE_USER_STORAGE_KEY, user);
+  }
+
+  private getPersistentActiveUser(): User | null {
     return this.localStorageService.loadData(this.ACTIVE_USER_STORAGE_KEY);
   }
 

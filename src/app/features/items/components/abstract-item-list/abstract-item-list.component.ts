@@ -1,4 +1,4 @@
-import { Component, input, InputSignal, OnInit, signal } from '@angular/core';
+import { Component, computed, input, InputSignal, OnInit, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { SharedTableComponent } from '../../../../shared/components/shared-table/shared-table.component';
 import { PartyItem } from '../../models/party-item';
@@ -17,6 +17,7 @@ export abstract class AbstractItemListComponent implements OnInit {
 
   partyId: InputSignal<number> = input.required();
   items = signal<PartyItem[]>([]);
+  filteredItems = computed(() => this.filterOwnedByPartyItems());
 
   readonly columns: ItemTableColumn[] = [
     { field: 'id', label: 'ID', width: '5%' },
@@ -32,14 +33,18 @@ export abstract class AbstractItemListComponent implements OnInit {
   constructor(private itemService: ItemService) {}
 
   ngOnInit(): void {
-    this.subscribeToPartyItemsWithStatus();
+    this.subscribeToItemsWithStatus();
   }
 
-  private subscribeToPartyItemsWithStatus(): void {
-    this.itemService.getItemsByPartyAndStatus(this.partyId(), this.statuses)
+  private subscribeToItemsWithStatus(): void {
+    this.itemService.getItemsByStatus(this.statuses)
       .pipe(
         tap(items => this.items.set(items))
       ).subscribe();
+  }
+
+  private filterOwnedByPartyItems(): PartyItem[] {
+    return this.items().filter(item => item.isOwnedByParty(this.partyId()));
   }
 
   onStatusClick(item: PartyItem) {

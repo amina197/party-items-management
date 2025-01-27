@@ -1,5 +1,5 @@
 <app-shared-table [columns]="columns">
-  @for (item of items(); track item.id) {
+  @for (item of filteredItems(); track item.id) {
     <tr>
       @for (col of columns; track col.field) {
         <td [style.width]="col.width || 'auto'">

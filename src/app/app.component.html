@@ -1,6 +1,13 @@
-<app-item-management-dashboard [partyId]="1">
+@if (!isInitializing()) {
+  <app-sidebar
+    [users]="users"
+    [activeUser]="activeUser()"
+  ></app-sidebar>
 
-</app-item-management-dashboard>
+  <app-item-management-dashboard
+    [partyId]="activeUser().partyId"
+  ></app-item-management-dashboard>
+}
 
 
 <router-outlet />
