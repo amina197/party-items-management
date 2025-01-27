@@ -4,7 +4,7 @@ import { SharedTableComponent } from '../../../../shared/components/shared-table
 import { PartyItem } from '../../models/party-item';
 import { ItemTableColumn } from '../../models/item-table-column';
 import { StatusEnum } from '../../../../shared/enums/status.enum';
-import { ItemService } from '../../../../services/item.service';
+import { ItemService } from '../../../../services/items/item.service';
 
 
 @Component({

@@ -4,7 +4,7 @@ import { AbstractItemListComponent } from './abstract-item-list.component';
 import { ComponentRef } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { PartyItem } from '../../models/party-item';
-import { ItemService } from '../../../../services/item.service';
+import { ItemService } from '../../../../services/items/item.service';
 import { StatusEnum } from '../../../../shared/enums/status.enum';
 import { ActionRequiredItemListComponent } from '../action-required-item-list/action-required-item-list.component';
 

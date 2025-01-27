@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ItemService } from './item.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { StatusEnum } from '../shared/enums/status.enum';
-import { PartyItem } from '../features/items/models/party-item';
+import { StatusEnum } from '../../shared/enums/status.enum';
+import { PartyItem } from '../../features/items/models/party-item';
+import { ItemService } from './item.service';
 
 describe('ItemService', () => {
   let service: ItemService;
