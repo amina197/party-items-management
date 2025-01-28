@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { User } from '../../features/users/users/user';
-import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, catchError, map, Observable, of, throwError } from 'rxjs';
+import { User } from '../../features/users/users/user';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { OwnersService } from '../owners.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,14 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
 export class UserService {
 
   private readonly ACTIVE_USER_STORAGE_KEY = 'active_user';
+  private readonly USERS_STORAGE_KEY = 'users';
   private activeUserSubject = new BehaviorSubject<User>({} as User);
   private activeUser$: Observable<User> = this.activeUserSubject.asObservable();
 
   constructor(private http: HttpClient,
+              private ownerService: OwnersService,
               private localStorageService: LocalStorageService
-  ) { }
+  ) {localStorage.clear()}
 
   public setActiveUser(user: User): void {
     this.activeUserSubject.next(user);
@@ -27,24 +30,44 @@ export class UserService {
   }
 
   public getUsers(): Observable<User[]> {
+    const users = this.getPersistentUsers();
+    if (users.length) {
+      return of(users);
+    }
+
+    return this.initializeUsers();
+  }
+
+  private initializeUsers(): Observable<User[]> {
     return this.http.get<User[]>('assets/users.json')
-      .pipe(
-        map(users => {
-          this.initializeActiveUser(users);
-          return users;
-        }),
-        catchError(err => throwError(() => new Error(`Error initializing items: ${err}`)))
-      );
+    .pipe(
+      map(users => {
+        users.forEach(user => {
+          const userParty = this.ownerService.getPersistentOwners().find(o => o.id === user.partyId);
+          if (userParty) {
+            user.party = userParty;
+          }
+        });
+        this.persistUsers(users);
+        this.initializeActiveUser(users);
+        return users;
+      }),
+      catchError(err => throwError(() => new Error(`Error initializing users: ${err}`)))
+    );
   }
 
   private initializeActiveUser(users: User[]): void {
     const storedActiveUser = this.getPersistentActiveUser();
+    const currentActiveUser = storedActiveUser || users[0];
+    this.setActiveUser(currentActiveUser);
+  }
 
-    if (storedActiveUser && users.find(user => user.id === storedActiveUser.id)) {
-      this.setActiveUser(storedActiveUser);
-    } else {
-      this.setActiveUser(users[0]);
-    }
+  private persistUsers(users: User[]): void {
+    this.localStorageService.saveData(this.USERS_STORAGE_KEY, users);
+  }
+
+  private getPersistentUsers(): User[] {
+    return this.localStorageService.loadData(this.USERS_STORAGE_KEY) || [];
   }
 
   private persistActiveUser(user: User): void {

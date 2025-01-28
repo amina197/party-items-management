@@ -25,7 +25,7 @@ describe('AbstractItemListComponent', () => {
       name: 'Item 1',
       description: 'desc',
       totalCost: 100,
-      ownerIds: [1],
+      owners: [1],
       status: StatusEnum.PENDING
     },
     {
@@ -33,7 +33,7 @@ describe('AbstractItemListComponent', () => {
       name: 'Item 2',
       description: 'desc',
       totalCost: 200,
-      ownerIds: [1,2],
+      owners: [1,2],
       status: StatusEnum.RECEIVED
     }
   ];
@@ -99,6 +99,6 @@ describe('AbstractItemListComponent', () => {
 });
 
 function getMockPartyItems(mockItems: Item[]) {
-  return mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
+  return mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.owners));
 }
 

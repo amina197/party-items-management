@@ -1,4 +1,6 @@
-import { StatusEnum } from '../../../shared/enums/status.enum';
+import { Owner } from '../../owners/models/owner';
+import { ItemProposal } from '../../proposals/models/item-proposal/item-proposal';
+import { ItemStatusEnum } from './item-status.enum';
 
 export interface Item {
   readonly id: number;
@@ -6,5 +8,7 @@ export interface Item {
   description: string;
   totalCost: number;
   ownerIds: number[];
-  status: StatusEnum;
+  owners: Owner[];
+  status: ItemStatusEnum;
+  proposals: ItemProposal[];
 }

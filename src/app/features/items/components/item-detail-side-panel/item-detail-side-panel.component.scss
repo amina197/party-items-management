@@ -1,0 +1,41 @@
+.detail-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+  }
+
+  .panel-body {
+    .cost-owners {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .owner-badge {
+      background-color: #2196f3;
+      color: #fff;
+      border-radius: 16px;
+      padding: 4px 8px;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+
+

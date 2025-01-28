@@ -38,14 +38,4 @@ describe('PartyItem', () => {
       expect(partyItem.isOwnedByParty(3)).toBe(false);
     });
   });
-
-  describe('Test isWithStatus method', () => {
-    it('should return true has one of the requested statuses', () => {
-      expect(partyItem.isWithStatus([StatusEnum.PENDING])).toBe(true);
-    });
-
-    it('should return false when the item hasn\'t one of the requested statuses', () => {
-      expect(partyItem.isWithStatus([StatusEnum.OWNED])).toBe(false);
-    });
-  });
 });

@@ -1,0 +1,30 @@
+<div class="proposal-read-only">
+  <p>
+    Created by Party {{ proposal.createdByParty }} on
+    {{ proposal.createdAt }}
+  </p>
+  <strong>Ratios:</strong>
+  <div class="ratios">
+    @for (owner of item.owners; track owner.id) {
+      <span>
+        Party {{ owner }} => {{ proposal.paymentRatios[owner.id] }}%
+      </span>
+    }
+  </div>
+
+  @if (proposal.comment) {
+    <div>
+      <strong>Comment: </strong>{{ proposal.comment }}
+    </div>
+  }
+
+  <div class="acceptance-record">
+    <strong>Acceptance Record:</strong>
+    @for (owner of item.owners; track owner.id) {
+      <div>
+        {{ owner.name }} => {{ proposal.acceptanceRecord[owner.id] }}
+      </div>
+    }
+  </div>
+</div>
+

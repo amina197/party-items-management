@@ -1,10 +1,12 @@
-import { Component, Input, input, InputSignal, Signal } from '@angular/core';
-import { User } from '../../../features/users/users/user';
+import { Component, Input, input, InputSignal } from '@angular/core';
 import { UserSwitchComponent } from '../../../features/users/components/user-switch/user-switch.component';
+import { User } from '../../../features/users/users/user';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [UserSwitchComponent],
+  imports: [
+    UserSwitchComponent
+  ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })

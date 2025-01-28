@@ -1,53 +1,63 @@
-import { Component, computed, input, InputSignal, OnInit, signal } from '@angular/core';
-import { tap } from 'rxjs';
-import { SharedTableComponent } from '../../../../shared/components/shared-table/shared-table.component';
-import { PartyItem } from '../../models/party-item';
-import { ItemTableColumn } from '../../models/item-table-column';
-import { StatusEnum } from '../../../../shared/enums/status.enum';
+import { NgClass } from '@angular/common';
+import { Component, computed, input, InputSignal, OnInit, Signal, signal } from '@angular/core';
 import { ItemService } from '../../../../services/items/item.service';
+import { SharedTableComponent } from '../../../../shared/components/shared-table/shared-table.component';
+import { StatusEnum } from '../../../../shared/enums/status.enum';
+import { User } from '../../../users/users/user';
+import { ItemTableColumn } from '../../models/item-table-column';
+import { PartyItem } from '../../models/party-item';
+import { ItemStatusToClassPipe } from "../../pipes/item-status-to-class.pipe";
+import { ItemDetailSidePanelComponent } from "../item-detail-side-panel/item-detail-side-panel.component";
 
 
 @Component({
   selector: 'app-abstract-item-list',
-  imports: [SharedTableComponent],
+  imports: [
+    SharedTableComponent,
+    NgClass,
+    ItemStatusToClassPipe,
+    ItemDetailSidePanelComponent
+],
   templateUrl: './abstract-item-list.component.html',
   styleUrl: './abstract-item-list.component.scss'
 })
 export abstract class AbstractItemListComponent implements OnInit {
 
-  partyId: InputSignal<number> = input.required();
+  activeUser: InputSignal<User> = input.required();
+  ownerId: Signal<number> = computed(() => this.activeUser().partyId);
   items = signal<PartyItem[]>([]);
   filteredItems = computed(() => this.filterOwnedByPartyItems());
+  selectedItem: PartyItem | null = null;
+  showSidePanel = false;
 
-  readonly columns: ItemTableColumn[] = [
-    { field: 'id', label: 'ID', width: '5%' },
-    { field: 'name', label: 'Name', width: '20%' },
-    { field: 'description', label: 'Description', width: '35%' },
-    { field: 'totalCost', label: 'Total Cost', width: '10%' },
-    { field: 'ownerIds', label: 'Party Owners', width: '10%' },
-    { field: 'status', label: 'Status', width: '20%' }
-  ];
+  columns: ItemTableColumn[] = [];
 
   protected statuses: StatusEnum[] = [];
 
-  constructor(private itemService: ItemService) {}
+  constructor(protected itemService: ItemService) {}
 
-  ngOnInit(): void {
-    this.subscribeToItemsWithStatus();
+  public ngOnInit(): void {
+    this.subscribeToItems();
   }
 
-  private subscribeToItemsWithStatus(): void {
-    this.itemService.getItemsByStatus(this.statuses)
-      .pipe(
-        tap(items => this.items.set(items))
-      ).subscribe();
-  }
+  protected abstract subscribeToItems(): void;
 
   private filterOwnedByPartyItems(): PartyItem[] {
-    return this.items().filter(item => item.isOwnedByParty(this.partyId()));
+    return this.items()
+      .filter(item => item.isOwnedByParty(this.ownerId()))
+      .map(item => {
+        item.setStatus(this.ownerId());
+        return item;
+      });
   }
 
-  onStatusClick(item: PartyItem) {
-    // do something
+  public openItemDetails(item: PartyItem): void {
+    this.selectedItem = item;
+    this.showSidePanel = true;
+  }
+
+  public closeSidePanel(): void {
+    this.showSidePanel = false;
+    this.selectedItem = null;
   }
 }

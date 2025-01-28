@@ -1,25 +1,18 @@
 <div id="dashboard">
 
   <div id="up-section">
-    <app-shared-card title="Finalized items">
-      <app-readonly-item-list [partyId]="partyId()"></app-readonly-item-list>
+    <app-shared-card title="Exclusive items">
+      <app-readonly-item-list [activeUser]="activeUser()"></app-readonly-item-list>
     </app-shared-card>
 
   </div>
 
   <div id="down-section">
-    <app-shared-card title="Sent proposals waiting for approval">
-      <app-sent-proposal-item-list
-        [partyId]="partyId()"
-      ></app-sent-proposal-item-list>
+    <app-shared-card title="Shared items">
+      <app-action-required-item-list
+        [activeUser]="activeUser()"
+      ></app-action-required-item-list>
     </app-shared-card>
-
-  <app-shared-card title="Items requiring action">
-    <app-action-required-item-list
-      [partyId]="partyId()"
-    ></app-action-required-item-list>
-  </app-shared-card>
-
   </div>
 </div>
 

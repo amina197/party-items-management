@@ -1,0 +1,44 @@
+<div class="proposal-container">
+
+  @switch (item.status) {
+
+    @case (itemStatusEnum.NO_ACTIVE_PROPOSAL) {
+        <h3>Create a new Proposal</h3>
+        <app-new-proposal-form [item]="item"
+                               [activeOwnerId]="ownerId"
+                               [activeUser]="activeUser"
+                               (submitted)="onUpdateProposal()"
+        ></app-new-proposal-form>
+    }
+
+    @case (itemStatusEnum.ACTION_REQUIRED) {
+      <h3>Proposal in progress</h3>
+      <app-action-required-proposal [item]="item"
+                                    [ownerId]="ownerId"
+                                    [activeUser]="activeUser"
+                                    (accepted)="onUpdateProposal()"
+                                    (rejected)="onRejectProposal($event)"
+      ></app-action-required-proposal >
+
+      @if (displayCounterProposal) {
+        <h3>Send Counter-Proposal</h3>
+        <app-counter-proposal-form [item]="item"
+                                  [activeOwnerId]="ownerId"
+                                  [activeUser]="activeUser"
+                                  [rejectedProposal]="rejectedProposal"
+                                  (submitted)="onUpdateProposal()"
+        ></app-counter-proposal-form>
+      }
+    }
+
+    @case (itemStatusEnum.WAITING_FOR_OTHERS) {
+      <h3>Proposal in progress</h3>
+
+      <app-proposal-readonly [item]="item"
+      ></app-proposal-readonly>
+    }
+  }
+
+  <app-proposal-history [item]="item"></app-proposal-history>
+
+</div>

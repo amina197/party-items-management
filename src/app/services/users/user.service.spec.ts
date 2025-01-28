@@ -90,7 +90,7 @@ describe('UserService', () => {
     });
 
     it('should call assets/users.json and initialize active user to first if stored is invalid', done => {
-      const invalidStoredUser: User = { id: 999, name: 'Ghost', email: 'ghost@test.com', partyId: 999 };
+      const invalidStoredUser: User = { id: 999, name: 'Ghost', email: 'ghost@test.com', party: 999 };
       mockLocalStorageService.loadData.mockReturnValue(invalidStoredUser);
 
       service.getUsers().subscribe(users => {

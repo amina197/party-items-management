@@ -1,0 +1,34 @@
+.proposal-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.item-info {
+  background-color: #f7f7f7;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.item-info h2 {
+  margin-top: 0;
+}
+
+.cost-owners {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.owner-badge {
+  background-color: #2196f3;
+  color: #fff;
+  border-radius: 16px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+}

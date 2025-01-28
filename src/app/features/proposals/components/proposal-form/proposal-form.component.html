@@ -1,0 +1,49 @@
+<form [formGroup]="proposalForm" (ngSubmit)="onSubmitProposal()">
+
+  <div class="ratios-container">
+    @for (owner of item.owners; track owner.id; let i = $index) {
+      <label class="ratio-label">
+        {{ owner.name }} ratio (%)
+        <input type="number"
+               [formControl]="paymentRatios.at(i)"
+               required
+               min="0"
+               max="100"
+        />
+
+        @if (paymentRatios.at(i).invalid && paymentRatios.at(i).touched) {
+          <span class="error-message">
+            Invalid ratio
+          </span>
+        }
+      </label>
+    }
+  </div>
+
+  <label>
+    {{ commentLabel }}
+    <textarea formControlName="comment"></textarea>
+
+    @if (isCommentRequired && proposalForm.get('comment')?.invalid && proposalForm.get('comment')?.touched) {
+      <span class="error-message">
+        Comment is required
+      </span>
+    }
+  </label>
+
+  <div class="actions">
+    <button type="button"
+            class="cancel-btn"
+            (click)="onCancelProposal()"
+    >
+      Cancel
+    </button>
+
+    <button type="submit"
+            class="send-btn"
+            [disabled]="isSubmitting() || proposalForm.invalid"
+    >
+      {{ validationButtonLabel }}
+    </button>
+  </div>
+</form>

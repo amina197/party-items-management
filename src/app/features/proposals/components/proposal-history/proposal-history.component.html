@@ -1,0 +1,54 @@
+<div class="proposal-history">
+  <h3>Proposals History</h3>
+
+  @if (!proposals().length) {
+    <div class="empty-msg">
+      No proposals yet for this item.
+    </div>
+
+  } @else {
+    <div class="history-list">
+
+      @for (proposal of proposals(); track proposal.id) {
+        <div class="history-item">
+          <div class="history-header">
+            <span class="proposal-date">
+              {{ proposal.createdAt }}
+            </span>
+            <span class="proposal-status" [ngClass]="proposal.status">
+              {{ proposal.status }}
+            </span>
+          </div>
+
+          <div class="history-body">
+            <div class="ratios">
+              <strong>Ratios:</strong>
+
+              @for (owner of item().owners; track owner.id) {
+                <span>
+                  {{ owner.name }} => {{ proposal.paymentRatios[owner.id] }}%
+                </span>
+              }
+            </div>
+
+            @if (proposal.comment) {
+              <div class="comment">
+                <strong>Comment:</strong> {{ proposal.comment }}
+              </div>
+            }
+
+            <div class="accepted-by">
+              <strong>Accepted by:</strong>
+              @for (owner of item().owners; track owner.id) {
+                <div>
+                  {{ owner.name }} => {{ proposal.acceptanceRecord[owner.id] }}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+</div>

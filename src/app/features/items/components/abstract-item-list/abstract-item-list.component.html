@@ -1,24 +1,29 @@
 <app-shared-table [columns]="columns">
   @for (item of filteredItems(); track item.id) {
-    <tr>
+
+    <tr (click)="openItemDetails(item)"
+        class="clickable-row"
+    >
       @for (col of columns; track col.field) {
         <td [style.width]="col.width || 'auto'">
 
           @switch (col.field) {
-            @case ('status') {
-              <button (click)="onStatusClick(item)" class="status-action-btn">
-                  {{ item[col.field] }}
-              </button>
-            }
-
             @case ('totalCost') {
               {{ item[col.field] }}€
             }
 
-            @case ('ownerIds') {
-              @for (owner of item.ownerIds; track owner) {
-                <span class="owner">{{ owner }}</span>
+            @case ('owners') {
+              @for (owner of item.owners; track owner.id) {
+                <span class="owner-badge">
+                  {{ owner.name }}
+                </span>
               }
+            }
+
+            @case ('status') {
+              <span class="status-badge" [ngClass]="item.status | itemStatusToClass">
+                {{ item.status }}
+              </span>
             }
 
             @default {
@@ -30,3 +35,15 @@
     </tr>
   }
 </app-shared-table>
+
+
+@if (showSidePanel && selectedItem) {
+  <div class="side-panel">
+    <app-item-detail-side-panel
+      [item]="selectedItem"
+      [activeUser]="activeUser()"
+      [ownerId]="ownerId()"
+      (closePanel)="closeSidePanel()"
+    ></app-item-detail-side-panel>
+  </div>
+}
