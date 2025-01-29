@@ -1,22 +1,26 @@
+@use 'styles/utils' as ds;
+
 :host {
+  width: 88%;
+  height: 100%;
 
-  #dashboard {
-    max-width: 100%;
-    max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: ds.$bg-color;
+
+  #up-section {
+    height: 40%;
     display: flex;
-    flex-direction: column;
+    gap: 2rem;
+  }
 
-    #up-section,
-    #down-section {
-      display: flex;
+  #down-section {
+    height: 60%;
+  }
 
-      app-sent-proposal-item-list {
-        flex: 2;
-      }
-
-      app-action-required-item-list {
-        flex: 3;
-      }
-    }
+  #up-section,
+  #down-section {
+    display: flex;
+    padding: ds.$medium-padding;
   }
 }

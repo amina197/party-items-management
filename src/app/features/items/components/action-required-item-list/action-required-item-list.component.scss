@@ -1,0 +1,27 @@
+:host {
+  display: contents;
+
+  tr {
+    &.clickable-row {
+      cursor: pointer;
+      &:hover {
+        background-color: #f9f9f9;
+      }
+    }
+  }
+
+  .side-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 45%;
+    height: 100%;
+    background-color: white;
+    border-left: 1px solid #ccc;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding: 1rem;
+    z-index: 999;
+  }
+}
+

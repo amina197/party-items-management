@@ -1,18 +1,23 @@
-<div id="dashboard">
-
-  <div id="up-section">
-    <app-shared-card title="Exclusive items">
-      <app-readonly-item-list [activeUser]="activeUser()"></app-readonly-item-list>
-    </app-shared-card>
-
-  </div>
-
-  <div id="down-section">
-    <app-shared-card title="Shared items">
-      <app-action-required-item-list
+<div id="up-section">
+  <app-shared-card title="Exclusive ownership items">
+    <app-readonly-item-list
         [activeUser]="activeUser()"
-      ></app-action-required-item-list>
-    </app-shared-card>
-  </div>
+    ></app-readonly-item-list>
+  </app-shared-card>
+
+  <app-shared-card title="Finalized shared items">
+    <app-finalized-shared-item-list
+        [activeUser]="activeUser()"
+    ></app-finalized-shared-item-list>
+  </app-shared-card>
 </div>
+
+<div id="down-section">
+  <app-shared-card title="Shared items pending proposals">
+    <app-proposal-eligible-shared-item-list
+      [activeUser]="activeUser()"
+    ></app-proposal-eligible-shared-item-list>
+  </app-shared-card>
+</div>
+
 

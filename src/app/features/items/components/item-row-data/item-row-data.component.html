@@ -1,0 +1,28 @@
+@for (col of columns; track col.field) {
+  <td [ngStyle]="{'width': col.width || 'auto', 'minWidth': col.minWidth || 'auto'}">
+
+    @switch (col.field) {
+      @case ('totalCost') {
+        {{ item[col.field] }}€
+      }
+
+      @case ('owners') {
+        @for (owner of item.owners; track owner.id) {
+          <span class="owner-badge">
+            {{ owner.name }}
+          </span>
+        }
+      }
+
+      @case ('status') {
+        <span class="status-badge" [ngClass]="item.status | itemStatusToClass">
+          {{ item.status }}
+        </span>
+      }
+
+      @default {
+        {{ item[col.field] }}
+      }
+    }
+  </td>
+}

@@ -23,6 +23,7 @@ export class PartyItem implements Item {
     totalCost: number,
     ownerIds: number[],
     owners: Owner[],
+    status: ItemStatusEnum,
     proposals: ItemProposal[]
   ) {
     this.id = id;
@@ -32,7 +33,7 @@ export class PartyItem implements Item {
     this.ownerIds = ownerIds;
     this.owners = owners;
     this.isShared = this.isOwnedBySeveralParties();
-    this.status = ItemStatusEnum.NO_ACTIVE_PROPOSAL;
+    this.status = status || ItemStatusEnum.NO_ACTIVE_PROPOSAL;
     this.proposals = proposals;
   }
 

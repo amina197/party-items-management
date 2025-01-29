@@ -6,6 +6,7 @@ import { PartyItem } from '../../features/items/models/party-item';
 import { Owner } from '../../features/owners/models/owner';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { OwnersService } from '../owners.service';
+import { ItemStatusEnum } from '../../features/items/models/item-status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +47,14 @@ export class ItemService {
 
   public getSharedItems(): Observable<PartyItem[]> {
     return this.getExclusiveOrSharedItems(true);
+  }
+
+  public getFinalizedSharedItems(): Observable<PartyItem[]> {
+    return this.items$.pipe(
+      map(items => items
+        .filter(item => item.status === ItemStatusEnum.ACCEPTED)
+      )
+    );
   }
 
   private getExclusiveOrSharedItems(shouldBeShared: boolean): Observable<PartyItem[]> {
@@ -91,6 +100,7 @@ export class ItemService {
       item.totalCost,
       item.ownerIds,
       owners,
+      item.status,
       item.proposals || []
     );
   }

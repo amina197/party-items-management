@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ProposalService } from '../../../../services/proposals/proposal.service';
 import { StatusEnum } from '../../../../shared/enums/status.enum';
+import { ItemStatusEnum } from '../../../items/models/item-status.enum';
 import { PartyItem } from '../../../items/models/party-item';
 import { User } from '../../../users/users/user';
 import { ItemProposal } from '../../models/item-proposal/item-proposal';
@@ -41,6 +42,7 @@ export class ActionRequiredProposalComponent implements OnInit {
     );
     if (allAccepted) {
       this.proposal.status = StatusEnum.ACCEPTED;
+      this.item.status = ItemStatusEnum.ACCEPTED;
     }
 
     const proposalIndex = this.item.proposals.findIndex(p => p.id === this.proposal.id);

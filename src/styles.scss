@@ -1,5 +1,5 @@
 @use 'styles/utils' as ds;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 
 body {
@@ -8,14 +8,13 @@ body {
   height: 100%;
   width: 100%;
 
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Nunito', sans-serif;
   color: ds.$text-primary-color;
   background-color: #ffffff;
   font-size: .9rem;
 
   h5 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 1.6rem;
-  }
+    text-transform: capitalize;
+    font-size: 1.125rem;
+    font-weight: 600;  }
 }

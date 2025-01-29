@@ -1,1 +1,9 @@
-<p>readonly-item-list works!</p>
+<app-shared-table [columns]="columns">
+  @for (item of filteredItems(); track item.id) {
+
+    <tr>
+      <app-item-row-data [columns]="columns" [item]="item">
+      </app-item-row-data>
+    </tr>
+  }
+</app-shared-table>
