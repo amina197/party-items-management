@@ -13,12 +13,15 @@ export class OwnersService {
 
   constructor(private http: HttpClient,
               private localStorageService: LocalStorageService
-  ) { }
+  ) {}
 
-  public setInitialOwners(): Observable<Owner[]> {
+  private setInitialOwners(): Observable<Owner[]> {
     return this.http.get<Owner[]>('assets/owners.json')
       .pipe(
-        tap(owners => this.persistOwners(owners)),
+        tap(owners => {
+          const finalOwners = owners.map(owner => this.buildOwner(owner));
+          this.persistOwners(finalOwners)
+        }),
         catchError(err => throwError(() => new Error(`Error initializing owners: ${err}`)))
       );
   }
@@ -38,5 +41,9 @@ export class OwnersService {
 
   private persistOwners(owners: Owner[]): void {
     this.localStorageService.saveData(this.OWNERS_STORAGE_KEY, owners);
+  }
+
+  private buildOwner(owner: Owner) {
+    return new Owner(owner.id, owner.name, owner.remainingBudget);
   }
 }

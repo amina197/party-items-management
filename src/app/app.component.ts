@@ -26,8 +26,8 @@ export class AppComponent implements OnInit {
 
   constructor(private userService: UserService, private ownerService: OwnersService) {}
 
-  ngOnInit(): void {
-    this.ownerService.setInitialOwners()
+  public ngOnInit(): void {
+    this.ownerService.getOwners()
       .pipe(switchMap(() => this.setUsersAndActiveUser()))
       .subscribe();
   }

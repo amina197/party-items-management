@@ -18,7 +18,7 @@ export class UserService {
   constructor(private http: HttpClient,
               private ownerService: OwnersService,
               private localStorageService: LocalStorageService
-  ) {localStorage.clear()}
+  ) {}
 
   public setActiveUser(user: User): void {
     this.activeUserSubject.next(user);
@@ -32,6 +32,7 @@ export class UserService {
   public getUsers(): Observable<User[]> {
     const users = this.getPersistentUsers();
     if (users.length) {
+      this.initializeActiveUser(users);
       return of(users);
     }
 
@@ -42,18 +43,24 @@ export class UserService {
     return this.http.get<User[]>('assets/users.json')
     .pipe(
       map(users => {
-        users.forEach(user => {
-          const userParty = this.ownerService.getPersistentOwners().find(o => o.id === user.partyId);
-          if (userParty) {
-            user.party = userParty;
-          }
-        });
+        this.setUsersParty(users);
+
         this.persistUsers(users);
         this.initializeActiveUser(users);
         return users;
       }),
       catchError(err => throwError(() => new Error(`Error initializing users: ${err}`)))
     );
+  }
+
+  private setUsersParty(users: User[]): void {
+    users.forEach(user => {
+      const parties = this.ownerService.getPersistentOwners();
+      const userParty = parties.find(o => o.id === user.partyId);
+      if (userParty) {
+        user.party = userParty;
+      }
+    });
   }
 
   private initializeActiveUser(users: User[]): void {
