@@ -13,7 +13,6 @@ import { PartyItem } from '../../models/party-item';
 export class ItemDetailSidePanelComponent {
 
   @Input({ required: true }) item!: PartyItem;
-  @Input({ required: true }) ownerId!: number;
   @Input({ required: true }) activeUser!: User;
 
   @Output() closePanel = new EventEmitter<void>();

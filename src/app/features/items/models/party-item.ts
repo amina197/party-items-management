@@ -49,7 +49,7 @@ export class PartyItem implements Item {
     return statuses.includes(this.status);
   }
 
-  public setStatus(ownerId: number) {
+  public setStatusForParty(ownerId: number): void {
     this.status = this.getStatus(ownerId)
   }
 

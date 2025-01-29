@@ -6,6 +6,7 @@ import { ReadonlyItemListComponent } from '../../../items/components/readonly-it
 import { User } from '../../../users/users/user';
 import {  FinalizedSharedItemListComponent } from "../../../items/components/finalized-shared-item-list/finalized-shared-item-list.component";
 import { ProposalEligibleSharedItemListComponent } from '../../../items/components/proposal-eligible-shared-item-list/proposal-eligible-shared-item-list.component';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-item-management-dashboard',
@@ -21,10 +22,14 @@ import { ProposalEligibleSharedItemListComponent } from '../../../items/componen
 export class ItemManagementDashboardComponent implements OnInit {
 
     activeUser: InputSignal<User> = input.required();
+    isInitializing = true;
 
     constructor(private itemService: ItemService) {}
 
     public ngOnInit(): void {
-      this.itemService.initializeItems();
+      this.itemService.initializeItems()
+      .pipe(
+        finalize(() => this.isInitializing = false)
+      ).subscribe();
     }
 }

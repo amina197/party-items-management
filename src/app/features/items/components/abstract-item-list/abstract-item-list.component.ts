@@ -10,7 +10,6 @@ import { PartyItem } from '../../models/party-item';
 export abstract class AbstractItemListComponent implements OnInit {
 
   activeUser: InputSignal<User> = input.required();
-  ownerId: Signal<number> = computed(() => this.activeUser().partyId);
   items = signal<PartyItem[]>([]);
   filteredItems = computed(() => this.filterOwnedByPartyItems());
   selectedItem: PartyItem | null = null;
@@ -30,9 +29,9 @@ export abstract class AbstractItemListComponent implements OnInit {
 
   private filterOwnedByPartyItems(): PartyItem[] {
     return this.items()
-      .filter(item => item.isOwnedByParty(this.ownerId()))
+      .filter(item => item.isOwnedByParty(this.activeUser().partyId))
       .map(item => {
-        item.setStatus(this.ownerId());
+        item.setStatusForParty(this.activeUser().partyId);
         return item;
       });
   }

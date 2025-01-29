@@ -15,9 +15,7 @@ import { ProposalReadonlyComponent } from '../proposal-readonly/proposal-readonl
 })
 export class ActionRequiredProposalComponent implements OnInit {
 
-
   @Input({ required: true }) item!: PartyItem;
-  @Input({ required: true }) ownerId!: number;
   @Input({ required: true }) activeUser!: User;
 
   @Output() accepted = new EventEmitter<void>();
@@ -35,7 +33,7 @@ export class ActionRequiredProposalComponent implements OnInit {
   }
 
   public onAcceptClick(): void {
-    this.proposal.acceptanceRecord[this.ownerId] = StatusEnum.ACCEPTED;
+    this.proposal.acceptanceRecord[this.activeUser.partyId] = StatusEnum.ACCEPTED;
 
     const allAccepted = Object.values(this.proposal.acceptanceRecord).every(
       val => val === StatusEnum.ACCEPTED

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs';
 import { SharedTableComponent } from '../../../../shared/components/shared-table/shared-table.component';
 import { PartyItem } from '../../models/party-item';
 import { AbstractItemListComponent } from '../abstract-item-list/abstract-item-list.component';

@@ -1,4 +1,5 @@
 import { StatusEnum } from "../../../../shared/enums/status.enum";
+import { Owner } from "../../../owners/models/owner";
 import { User } from "../../../users/users/user";
 import { AcceptanceRecord } from "../acceptance-record";
 import { PaymentRatio } from "../payment-ratio";
@@ -9,7 +10,7 @@ export class ItemProposal implements Proposal {
   id: number;
   itemId: number;
   createdAt: Date;
-  createdByParty: number;
+  createdByParty: Owner;
   createdByUser: User;
   comment?: string;
   paymentRatios: PaymentRatio;
@@ -19,7 +20,7 @@ export class ItemProposal implements Proposal {
   constructor(
     itemId: number,
     createdAt: Date,
-    createdByParty: number,
+    createdByParty: Owner,
     createdByUser: User,
     paymentRatios: PaymentRatio,
     status: StatusEnum,

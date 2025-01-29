@@ -2,9 +2,9 @@
                        [proposal]="proposal"
 ></app-proposal-readonly>
 
-@if (proposal.acceptanceRecord[ownerId] ===  statusEnum.PENDING) {
+@if (proposal.acceptanceRecord[activeUser.partyId] ===  statusEnum.PENDING) {
   <button class="accept-btn" (click)="onAcceptClick()">Accept</button>
   <button class="reject-btn" (click)="onRejectClick()">Reject</button>
 } @else {
-  <p>Your response: {{ proposal.acceptanceRecord[ownerId] }}</p>
+  <p>Your response: {{ proposal.acceptanceRecord[activeUser.partyId] }}</p>
 }

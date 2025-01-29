@@ -1,13 +1,13 @@
 <div class="proposal-read-only">
   <p>
-    Created by Party {{ proposal.createdByParty }} on
+    Created by {{ proposal.createdByParty.name }} on
     {{ proposal.createdAt }}
   </p>
   <strong>Ratios:</strong>
   <div class="ratios">
     @for (owner of item.owners; track owner.id) {
       <span>
-        Party {{ owner }} => {{ proposal.paymentRatios[owner.id] }}%
+        {{ owner.name }} => {{ proposal.paymentRatios[owner.id] }}%
       </span>
     }
   </div>

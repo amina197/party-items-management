@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { Item } from '../../features/items/models/item';
 import { PartyItem } from '../../features/items/models/party-item';
 import { Owner } from '../../features/owners/models/owner';
@@ -22,23 +22,24 @@ export class ItemService {
               private localStorageService: LocalStorageService
   ) {}
 
-  public initializeItems(): void {
+  public initializeItems(): Observable<void> {
     const storedItems = this.getPersistentItems();
-    storedItems ? this.setItems(storedItems) : this.setInitialItems();
+    return storedItems ? this.setItems(storedItems) : this.setInitialItems();
   }
 
-  private setInitialItems(): void {
-    this.http.get<Item[]>('assets/items.json')
+  private setInitialItems(): Observable<void> {
+    return this.http.get<Item[]>('assets/items.json')
       .pipe(
-        tap(items => this.setItems(items)),
+        switchMap(items => this.setItems(items)),
         catchError(err => throwError(() => new Error(`Error initializing items: ${err}`)))
-      ).subscribe();
+      );
   }
 
-  private setItems(items: Item[]): void {
+  private setItems(items: Item[]): Observable<void> {
     const partyItems = this.toPartyItems(items);
     this.itemsSubject.next(partyItems);
     this.persistItems(partyItems);
+    return of();
   }
 
   public getExclusiveItems(): Observable<PartyItem[]> {
@@ -65,11 +66,11 @@ export class ItemService {
     );
   }
 
-  public updateItem(item: PartyItem) {
+  public updateItem(item: PartyItem): Observable<void> {
     const index = this.findItemIndexById(item.id);
     const updatedItems = [...this.itemsSubject.getValue()];
     updatedItems[index] = item;
-    this.setItems(updatedItems);
+    return this.setItems(updatedItems);
   }
 
   private findItemIndexById(id: number): number {

@@ -3,27 +3,22 @@
   @switch (item.status) {
 
     @case (itemStatusEnum.NO_ACTIVE_PROPOSAL) {
-        <h3>Create a new Proposal</h3>
-        <app-new-proposal-form [item]="item"
-                               [activeOwnerId]="ownerId"
-                               [activeUser]="activeUser"
+        <app-new-proposal-form [activeUser]="activeUser"
+                               [item]="item"
                                (submitted)="onUpdateProposal()"
         ></app-new-proposal-form>
     }
 
     @case (itemStatusEnum.ACTION_REQUIRED) {
       <h3>Proposal in progress</h3>
-      <app-action-required-proposal [item]="item"
-                                    [ownerId]="ownerId"
-                                    [activeUser]="activeUser"
+      <app-action-required-proposal [activeUser]="activeUser"
+                                    [item]="item"
                                     (accepted)="onUpdateProposal()"
                                     (rejected)="onRejectProposal($event)"
       ></app-action-required-proposal >
 
       @if (displayCounterProposal) {
-        <h3>Send Counter-Proposal</h3>
         <app-counter-proposal-form [item]="item"
-                                  [activeOwnerId]="ownerId"
                                   [activeUser]="activeUser"
                                   [rejectedProposal]="rejectedProposal"
                                   (submitted)="onUpdateProposal()"

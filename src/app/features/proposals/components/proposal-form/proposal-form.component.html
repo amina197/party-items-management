@@ -1,37 +1,57 @@
-<form [formGroup]="proposalForm" (ngSubmit)="onSubmitProposal()">
+<form [formGroup]="proposalForm" (ngSubmit)="onSubmitProposal()" class="proposal-form">
 
-  <div class="ratios-container">
-    @for (owner of item.owners; track owner.id; let i = $index) {
-      <label class="ratio-label">
-        {{ owner.name }} ratio (%)
-        <input type="number"
-               [formControl]="paymentRatios.at(i)"
-               required
-               min="0"
-               max="100"
-        />
+  <h2 class="form-title">{{ formTitle }}</h2>
 
-        @if (paymentRatios.at(i).invalid && paymentRatios.at(i).touched) {
+  <div class="form-content">
+
+    <div class="ratios-section">
+      <h3>Payment ratio</h3>
+      <div class="ratios-container">
+        @for (owner of item.owners; track owner.id; let i = $index) {
+          <label class="ratio-label">
+            <span>{{ owner.name }}</span>
+            <input type="number"
+                   [formControl]="paymentRatios.at(i)"
+                   required
+                   min="0"
+                   max="100"
+                   (input)="updateChart()"
+            />
+          </label>
+        }
+      </div>
+
+      <div class="chart-container">
+        <canvas id="ratiosChart"></canvas>
+      </div>
+
+    </div>
+
+    <div class="comment-section">
+      <label class="comment-label">
+        <h3>{{ commentLabel }}</h3>
+        <textarea formControlName="comment" placeholder="Any additional information..."></textarea>
+
+        @if (isCommentRequired && proposalForm.get('comment')?.invalid && proposalForm.get('comment')?.touched) {
           <span class="error-message">
-            Invalid ratio
+            Comment is required.
           </span>
         }
       </label>
-    }
+    </div>
   </div>
 
-  <label>
-    {{ commentLabel }}
-    <textarea formControlName="comment"></textarea>
+  @if (paymentRatios.invalid && paymentRatios.touched) {
+    <span class="error-message">
+      @if (paymentRatios.hasError('totalInvalid')) {
+        Invalid ratios.
+      } @else if (paymentRatios.hasError('budgetExceeded')) {
+        Budget exceeded.
+      }
+    </span>
+  }
 
-    @if (isCommentRequired && proposalForm.get('comment')?.invalid && proposalForm.get('comment')?.touched) {
-      <span class="error-message">
-        Comment is required
-      </span>
-    }
-  </label>
-
-  <div class="actions">
+  <div class="form-actions">
     <button type="button"
             class="cancel-btn"
             (click)="onCancelProposal()"
