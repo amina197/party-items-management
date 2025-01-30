@@ -1,18 +1,18 @@
 @if (!isInitializing) {
   <div id="up-section">
-    <app-shared-card title="">
+    <app-shared-card>
       <app-budget
           [activeUser]="activeUser()"
       ></app-budget>
     </app-shared-card>
 
-    <app-shared-card title="Exclusive ownership items">
+    <app-shared-card title="🎯 Your Private Assets">
       <app-readonly-item-list
           [activeUser]="activeUser()"
       ></app-readonly-item-list>
     </app-shared-card>
 
-    <app-shared-card title="Finalized shared items">
+    <app-shared-card title="🔗 Locked & Finalized">
       <app-finalized-shared-item-list
           [activeUser]="activeUser()"
       ></app-finalized-shared-item-list>
@@ -20,7 +20,7 @@
   </div>
 
   <div id="down-section">
-    <app-shared-card title="Shared items pending proposals">
+    <app-shared-card title="🚀 Pending Shared proposals">
       <app-proposal-eligible-shared-item-list
         [activeUser]="activeUser()"
       ></app-proposal-eligible-shared-item-list>

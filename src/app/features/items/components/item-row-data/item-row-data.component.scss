@@ -21,9 +21,9 @@
       color: #fff;
       font-size: 0.8rem;
       &.badge-action-required { background-color: #e67e22; }
-      &.badge-waiting        { background-color: #2980b9; }
+      &.badge-waiting        { background-color: #7faece; }
       &.badge-accepted       { background-color: #27ae60; }
-      &.badge-none           { background-color: #95a5a6; }
+      &.badge-none           { background-color: #2980b9; }
     }
   }
 }

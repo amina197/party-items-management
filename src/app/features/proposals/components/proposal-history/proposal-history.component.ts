@@ -18,6 +18,7 @@ export class ProposalHistoryComponent {
   selectedProposal: any = null;
 
   showCreatorColumn!: boolean;
+  showCreator!: boolean;
 
   public ngOnInit(): void {
     this.showCreatorColumn = this.proposals().some(p => p.createdByParty.id === this.activeUser.partyId);

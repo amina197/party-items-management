@@ -1,59 +1,47 @@
-# PartyItemsManagementApp
+# Party Items Management App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.4.
+This is an item management application built with Angular 19.1.4. It allows users to manage party-related items efficiently. The application is tested using Jest.
+
+The only external library used is Chart.js, which provides visual representations of data.
+
+## Prerequisites
+
+Make sure you have **Node.js version 18 or later** installed to ensure compatibility with Angular 19.
 
 ## Development server
 
-To start a local development server, run:
+1. Install dependencies
 
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+2. Run the application
 
 ```bash
-ng generate component component-name
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Once the server is running, open your browser and navigate to `http://localhost:4200/pi-management/`.
+
+## Running Tests
+
+The application uses Jest for testing. To execute the test suite, run:
 
 ```bash
-ng generate --help
+npm test
 ```
 
-## Building
+## Available commands
 
-To build the project run:
+All commands are defined in the package.json file.
+• Start the app: npm start
+• Build the app: npm run build
+• Watch for file changes and rebuild: npm run watch
+• Run tests with Jest: npm test
 
-```bash
-ng build
-```
+## Technologies Used
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+    •	Angular 19 (Frontend framework)
+    •	Jest (Testing framework)
+    •	Chart.js (Data visualization)

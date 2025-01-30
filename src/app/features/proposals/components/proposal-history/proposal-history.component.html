@@ -13,8 +13,11 @@
         <thead>
           <tr>
             <th>Date</th>
+            <th>Created by</th>
             <th>Status</th>
             <th>Payment ratios</th>
+            <th>Acceptance record</th>
+            <th>Comment</th>
           </tr>
         </thead>
 
@@ -22,6 +25,12 @@
           @for (proposal of proposals(); track proposal.id) {
             <tr>
               <td>{{ proposal.createdAt | date:'dd/MM/yyyy' }}</td>
+              @if (!showCreatorColumn) {
+                <td>{{ proposal.createdByParty.name }}</td>
+              } @else if (proposal.createdByParty.id === activeUser.id) {
+                <td>{{ proposal.createdByParty.name }} {{ proposal.createdByUser.name }}</td>
+              }
+
               <td>
                 <span class="status-badge" [ngClass]="proposal.status | statusToClass">
                   {{ proposal.status }}
@@ -35,6 +44,14 @@
                   </span>
                 }
               </td>
+              <td>
+                @for (owner of item().owners; track owner.id) {
+                  <span class="acceptance-status" [ngClass]="proposal.acceptanceRecord[owner.id] | statusToClass">
+                    {{ proposal.acceptanceRecord[owner.id] }}
+                  </span>
+                }
+              </td>
+              <td>{{ proposal.comment || '—' }}</td>
             </tr>
           }
         </tbody>
