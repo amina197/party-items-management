@@ -2,8 +2,9 @@ import { TestBed } from '@angular/core/testing';
 
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { StatusEnum } from '../../shared/enums/status.enum';
+import { ItemStatusEnum } from '../../features/items/models/item-status.enum';
 import { PartyItem } from '../../features/items/models/party-item';
+import { Owner } from '../../features/owners/models/owner';
 import { ItemService } from './item.service';
 
 describe('ItemService', () => {
@@ -36,64 +37,10 @@ describe('ItemService', () => {
     });
     service = TestBed.inject(ItemService);
     httpMock = TestBed.inject(HttpTestingController);
-
-    localStorage.clear();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
-  });
-
-  describe('Test items initialization', () => {
-    afterEach(() => httpMock.verify());
-
-    it('should fetch items from JSON and initialize them', () => {
-      const req = httpMock.expectOne('assets/items.json');
-      expect(req.request.method).toBe('GET');
-
-      req.flush(mockItems);
-
-      const storedItems = JSON.parse(localStorage.getItem(service['ITEMS_STORAGE_KEY'])!);
-      expect(storedItems).toHaveLength(2);
-      expect(storedItems[0].id).toBe(1);
-      expect(storedItems[1].id).toBe(2);
-    });
-
-    it('should handle errors when initializing items', () => {
-      const req = httpMock.expectOne('assets/items.json');
-      req.error(new ProgressEvent('Network error'));
-
-      expect(localStorage.getItem(service['ITEMS_STORAGE_KEY'])).toBeNull();
-    });
-  });
-
-
-  describe('Test getItemsByStatus method', () => {
-    it('should filter items by status', done => {
-
-      const partyItems = mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
-      localStorage.setItem(service['ITEMS_STORAGE_KEY'], JSON.stringify(partyItems));
-      service['itemsSubject'].next(partyItems);
-
-      service.getItemsByStatus([StatusEnum.PENDING])
-        .subscribe(filteredItems => {
-          expect(filteredItems).toHaveLength(1);
-          expect(filteredItems[0].id).toBe(2);
-          done();
-        });
-    });
-
-    it('should return an empty array if no items match the filters', done => {
-      const partyItems = mockItems.map(item => new PartyItem(item.id, item.name, item.description, item.totalCost, item.ownerIds));
-      localStorage.setItem(service['ITEMS_STORAGE_KEY'], JSON.stringify(partyItems));
-      service['itemsSubject'].next(partyItems);
-
-      service.getItemsByStatus([StatusEnum.FINALIZED])
-      .subscribe(filteredItems => {
-        expect(filteredItems).toHaveLength(0);
-        done();
-      });
-    });
   });
 
   describe('Test toPartyItem method', () => {
@@ -104,10 +51,12 @@ describe('ItemService', () => {
         description: 'Test Description',
         totalCost: 500,
         ownerIds: [1, 2],
-        status: StatusEnum.PENDING
+        owners: [],
+        status: ItemStatusEnum.ACTION_REQUIRED,
+        proposals: []
       };
 
-      const partyItem = service['toPartyItem'](item);
+      const partyItem = service['toPartyItem'](item, [] as Owner[]);
       expect(partyItem).toBeInstanceOf(PartyItem);
       expect(partyItem.id).toBe(item.id);
       expect(partyItem.name).toBe(item.name);

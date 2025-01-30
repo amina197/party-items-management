@@ -8,6 +8,7 @@ import { User } from '../../../users/users/user';
 import { AcceptanceRecord } from '../../models/acceptance-record';
 import { ItemProposal } from '../../models/item-proposal/item-proposal';
 import { PaymentRatio } from '../../models/payment-ratio';
+import ColorUtils from '../../../../shared/utils/color.utils';
 
 @Component({
   selector: 'app-proposal-form',
@@ -103,7 +104,6 @@ export abstract class ProposalFormComponent implements OnInit, AfterViewInit {
     this.item.proposals.unshift(newProposal);
 
     this.submitted.next();
-    this.isSubmitting.set(false);
   }
 
   private buildNewProposal(): ItemProposal {
@@ -156,10 +156,18 @@ export abstract class ProposalFormComponent implements OnInit, AfterViewInit {
         labels: this.item.owners.map(owner => owner.name),
         datasets: [{
           data: this.paymentRatios.value,
-          backgroundColor: '#2196f3'
+          backgroundColor: ColorUtils.getChartColors()
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right'
+          }
+        }
+      }
     });
   }
 

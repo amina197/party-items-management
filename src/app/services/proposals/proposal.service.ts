@@ -15,4 +15,10 @@ export class ProposalService {
 
     return null;
   }
+
+  public isProposalAccepted(proposal: ItemProposal): boolean {
+    return Object.values(proposal.acceptanceRecord).every(
+      val => val === StatusEnum.ACCEPTED
+    );
+  }
 }

@@ -14,7 +14,6 @@ describe('SharedTableComponent', () => {
 
     fixture = TestBed.createComponent(SharedTableComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

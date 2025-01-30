@@ -1,24 +1,28 @@
 <div class="detail-panel">
 
   <div class="panel-header">
-    <h2>{{ item.name }}</h2>
-    <button class="close-btn" (click)="onClose()">✕</button>
-  </div>
+    <div>
 
-  <div class="panel-body">
+      <h2>{{ item.name }}</h2>
+      <p class="description">{{ item.description }}</p>
 
-    <p class="description">{{ item.description }}</p>
-    <div class="cost-owners">
-      <span class="cost">Total Cost: {{ item.totalCost + '€' }}</span>
-      <div class="owners">
-        @for (owner of item.owners; track owner.id) {
-          <span class="owner-badge">
-            {{ owner.name }}
-          </span>
-        }
+      <div class="item-details">
+        <h3 class="cost">Total Cost: {{ item.totalCost + '€' }}</h3>
+        <div class="cost-owners">
+
+          <div class="owners">
+            @for (owner of item.owners; track owner.id) {
+              <span class="owner-badge">
+                {{ owner.name }}
+              </span>
+            }
+          </div>
+        </div>
       </div>
+
     </div>
 
+    <button class="close-btn" (click)="onClose()">✕</button>
   </div>
 
   <app-proposal [item]="item"

@@ -7,6 +7,7 @@ import { User } from '../../../users/users/user';
 import {  FinalizedSharedItemListComponent } from "../../../items/components/finalized-shared-item-list/finalized-shared-item-list.component";
 import { ProposalEligibleSharedItemListComponent } from '../../../items/components/proposal-eligible-shared-item-list/proposal-eligible-shared-item-list.component';
 import { finalize } from 'rxjs';
+import { BudgetComponent } from "../../../budget/components/budget/budget.component";
 
 @Component({
   selector: 'app-item-management-dashboard',
@@ -14,8 +15,9 @@ import { finalize } from 'rxjs';
     ProposalEligibleSharedItemListComponent,
     ReadonlyItemListComponent,
     SharedCardComponent,
-    FinalizedSharedItemListComponent
-  ],
+    FinalizedSharedItemListComponent,
+    BudgetComponent
+],
   templateUrl: './item-management-dashboard.component.html',
   styleUrl: './item-management-dashboard.component.scss'
 })

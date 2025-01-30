@@ -1,35 +1,37 @@
 <div class="proposal-container">
 
-  @switch (item.status) {
+  <div class="active-proposal">
+    @switch (item.status) {
 
-    @case (itemStatusEnum.NO_ACTIVE_PROPOSAL) {
-        <app-new-proposal-form [activeUser]="activeUser"
-                               [item]="item"
-                               (submitted)="onUpdateProposal()"
-        ></app-new-proposal-form>
-    }
+      @case (itemStatusEnum.NO_ACTIVE_PROPOSAL) {
+          <app-new-proposal-form [activeUser]="activeUser"
+                                 [item]="item"
+                                 (submitted)="onUpdateProposal()"
+          ></app-new-proposal-form>
+      }
 
-    @case (itemStatusEnum.ACTION_REQUIRED) {
-      <app-action-required-proposal [activeUser]="activeUser"
-                                    [item]="item"
-                                    (accepted)="onUpdateProposal()"
-                                    (rejected)="onRejectProposal($event)"
-      ></app-action-required-proposal >
+      @case (itemStatusEnum.ACTION_REQUIRED) {
+        <app-action-required-proposal [activeUser]="activeUser"
+                                      [item]="item"
+                                      (accepted)="onUpdateProposal()"
+                                      (rejected)="onRejectProposal($event)"
+        ></app-action-required-proposal>
 
-      @if (displayCounterProposal) {
-        <app-counter-proposal-form [item]="item"
-                                  [activeUser]="activeUser"
-                                  [rejectedProposal]="rejectedProposal"
-                                  (submitted)="onUpdateProposal()"
-        ></app-counter-proposal-form>
+        @if (displayCounterProposal) {
+          <app-counter-proposal-form [item]="item"
+                                    [activeUser]="activeUser"
+                                    [rejectedProposal]="rejectedProposal"
+                                    (submitted)="onUpdateProposal()"
+          ></app-counter-proposal-form>
+        }
+      }
+
+      @case (itemStatusEnum.WAITING_FOR_OTHERS) {
+        <app-proposal-readonly [item]="item"
+        ></app-proposal-readonly>
       }
     }
-
-    @case (itemStatusEnum.WAITING_FOR_OTHERS) {
-      <app-proposal-readonly [item]="item"
-      ></app-proposal-readonly>
-    }
-  }
+  </div>
 
   <app-proposal-history [item]="item" [activeUser]="activeUser"></app-proposal-history>
 

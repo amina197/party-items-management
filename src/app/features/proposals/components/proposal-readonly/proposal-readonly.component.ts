@@ -5,6 +5,7 @@ import { ProposalService } from '../../../../services/proposals/proposal.service
 import { StatusToClassPipe } from '../../../../shared/pipes/status-to-class.pipe';
 import { PartyItem } from '../../../items/models/party-item';
 import { ItemProposal } from '../../models/item-proposal/item-proposal';
+import ColorUtils from '../../../../shared/utils/color.utils';
 
 @Component({
   selector: 'app-proposal-readonly',
@@ -40,10 +41,18 @@ export class ProposalReadonlyComponent implements AfterViewInit {
         labels: this.item.owners.map(owner => owner.name),
         datasets: [{
           data: this.item.owners.map(owner => this.proposal.paymentRatios[owner.id]),
-          backgroundColor: ['#2196f3', '#e67e22', '#27ae60', '#e74c3c', '#9b59b6']
+          backgroundColor: ColorUtils.getChartColors()
         }]
       },
-      options: { responsive: true, maintainAspectRatio: false }
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right'
+          }
+        }
+      }
     });
   }
 }

@@ -6,6 +6,7 @@ import { PartyItem } from '../../../items/models/party-item';
 import { User } from '../../../users/users/user';
 import { ItemProposal } from '../../models/item-proposal/item-proposal';
 import { ProposalReadonlyComponent } from '../proposal-readonly/proposal-readonly.component';
+import { OwnersService } from '../../../../services/owners.service';
 
 @Component({
   selector: 'app-action-required-proposal',
@@ -23,7 +24,7 @@ export class ActionRequiredProposalComponent implements OnInit {
 
   proposal!: ItemProposal;
 
-  constructor(private proposalService: ProposalService) {}
+  constructor(private proposalService: ProposalService, private ownerService: OwnersService) {}
 
   public ngOnInit(): void {
     const activeProposal = this.proposalService.getActiveProposal(this.item.proposals);
@@ -35,12 +36,10 @@ export class ActionRequiredProposalComponent implements OnInit {
   public onAcceptClick(): void {
     this.proposal.acceptanceRecord[this.activeUser.partyId] = StatusEnum.ACCEPTED;
 
-    const allAccepted = Object.values(this.proposal.acceptanceRecord).every(
-      val => val === StatusEnum.ACCEPTED
-    );
-    if (allAccepted) {
+    if (this.proposalService.isProposalAccepted(this.proposal)) {
       this.proposal.status = StatusEnum.ACCEPTED;
       this.item.status = ItemStatusEnum.ACCEPTED;
+      this.ownerService.updateOwnersBudget(this.item);
     }
 
     const proposalIndex = this.item.proposals.findIndex(p => p.id === this.proposal.id);

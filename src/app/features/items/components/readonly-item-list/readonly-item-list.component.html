@@ -5,5 +5,7 @@
       <app-item-row-data [columns]="columns" [item]="item">
       </app-item-row-data>
     </tr>
+  } @empty {
+    <li aria-hidden="true"> No items </li>
   }
 </app-shared-table>

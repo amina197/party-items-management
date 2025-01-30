@@ -1,8 +1,8 @@
 export enum ItemStatusEnum {
-  ACTION_REQUIRED = 'Action required',
-  WAITING_FOR_OTHERS = 'Waiting for others',
+  ACTION_REQUIRED = 'Rewiew proposal',
+  WAITING_FOR_OTHERS = 'Wait for approval',
   ACCEPTED = 'Accepted',
-  NO_ACTIVE_PROPOSAL = 'No active proposal'
+  NO_ACTIVE_PROPOSAL = 'Create proposal'
 }
 
 export namespace ItemStatusNamespace {

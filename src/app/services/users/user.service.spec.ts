@@ -1,10 +1,10 @@
-import { TestBed } from '@angular/core/testing';
-
-import { UserService } from './user.service';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
 import { User } from '../../features/users/users/user';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { OwnersService } from '../owners.service';
+import { UserService } from './user.service';
 
 describe('UserService', () => {
   let service: UserService;
@@ -15,6 +15,10 @@ describe('UserService', () => {
   const mockLocalStorageService = {
     saveData: jest.fn(),
     loadData: jest.fn(),
+  };
+
+  const mockOwnerService = {
+    getPersistentOwners: jest.fn().mockReturnValue([])
   };
 
   const mockUsers: User[] = [
@@ -30,7 +34,7 @@ describe('UserService', () => {
       email: 'bob@test.com',
       partyId: 102
     }
-  ];
+  ] as User[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -39,6 +43,7 @@ describe('UserService', () => {
         provideHttpClientTesting(),
         UserService,
         { provide: LocalStorageService, useValue: mockLocalStorageService },
+        { provide: OwnersService, useValue: mockOwnerService }
       ]
     });
 
@@ -66,65 +71,20 @@ describe('UserService', () => {
     });
   });
 
-  describe('Test getUsers method', () => {
-    it('should call assets/users.json and initialize active user (if stored user is valid)', done => {
-      mockLocalStorageService.loadData.mockReturnValue(mockUsers[1]);
+  describe('Test setUsersParty method', () => {
+    it('should set the user party when owners exist', () => {
+      const mockOwners = [
+        { id: 101, name: 'Party 101' },
+        { id: 102, name: 'Party 102' }
+      ];
 
-      service.getUsers().subscribe(users => {
-        expect(users).toEqual(mockUsers);
+      mockOwnerService.getPersistentOwners.mockReturnValue(mockOwners);
 
-        expect(mockLocalStorageService.saveData).not.toHaveBeenCalledWith(
-          'active_user',
-          mockUsers[0]
-        );
+      service['setUsersParty'](mockUsers);
 
-        service.getActiveUser().subscribe((active) => {
-          expect(active).toEqual(mockUsers[1]);
-          done();
-        });
-      });
-
-      const req = httpMock.expectOne(endpoint);
-      expect(req.request.method).toBe('GET');
-      req.flush(mockUsers);
-    });
-
-    it('should call assets/users.json and initialize active user to first if stored is invalid', done => {
-      const invalidStoredUser: User = { id: 999, name: 'Ghost', email: 'ghost@test.com', party: 999 };
-      mockLocalStorageService.loadData.mockReturnValue(invalidStoredUser);
-
-      service.getUsers().subscribe(users => {
-        expect(users).toEqual(mockUsers);
-
-        expect(mockLocalStorageService.saveData).toHaveBeenCalledWith(
-          'active_user',
-          mockUsers[0]
-        );
-
-        service.getActiveUser().subscribe(active => {
-          expect(active).toEqual(mockUsers[0]);
-          done();
-        });
-      });
-
-      const req = httpMock.expectOne(endpoint);
-      expect(req.request.method).toBe('GET');
-      req.flush(mockUsers);
-    });
-
-    it('should handle error when getUsers fails', done => {
-      service.getUsers().subscribe({
-        next: () => {
-          fail('Should have errored');
-        },
-        error: (err) => {
-          expect(err.message).toContain('Error initializing items:');
-          done();
-        },
-      });
-
-      const req = httpMock.expectOne(endpoint);
-      req.error(new ProgressEvent('Network error'));
+      expect(mockUsers[0].party).toEqual(mockOwners[0]);
+      expect(mockUsers[1].party).toEqual(mockOwners[1]);
     });
   });
+
 });

@@ -1,5 +1,11 @@
 @if (!isInitializing) {
   <div id="up-section">
+    <app-shared-card title="">
+      <app-budget
+          [activeUser]="activeUser()"
+      ></app-budget>
+    </app-shared-card>
+
     <app-shared-card title="Exclusive ownership items">
       <app-readonly-item-list
           [activeUser]="activeUser()"

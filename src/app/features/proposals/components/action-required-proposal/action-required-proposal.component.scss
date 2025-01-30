@@ -1,7 +1,39 @@
-.accept-btn {
-  background-color: #4caf50;
+@use 'styles/utils' as ds;
+
+:host {
+  .proposal-card {
+    margin-bottom: ds.$small-size;
+    background-color: #F5F7FF;
+
+    h3 {
+      line-height: 0;
+    }
+  }
+
+  button {
+
+    background-color: white;
+    text-transform: uppercase;
+
+    &.accept-btn {
+
+      color: ds.$light-blue-color;
+
+      &:hover {
+        background-color: ds.$medium-blue-color;
+        color: white;
+      }
+    }
+
+    &.reject-btn {
+      color: ds.$error-color;
+
+      &:hover {
+        background-color: ds.$error-color;
+        color: white;
+      }
+    }
+  }
 }
 
-.reject-btn {
-  background-color: #f44336;
-}
+

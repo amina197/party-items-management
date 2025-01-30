@@ -1,0 +1,15 @@
+@if (owner()) {
+  <div class="budget-container">
+    <h3 class="budget-title">Remaining Budget</h3>
+
+    <div class="budget-values">
+      <span class="remaining-budget">{{ owner().remainingBudget }}€</span>
+    </div>
+
+    <div class="budget-progress">
+      <div class="progress-bar" [style.width.%]="owner().initialBudget | calculateProgress : owner().remainingBudget"></div>
+    </div>
+  </div>
+}
+
+

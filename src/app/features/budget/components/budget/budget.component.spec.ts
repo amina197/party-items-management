@@ -1,23 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActionRequiredProposalComponent } from './action-required-proposal.component';
+import { BudgetComponent } from './budget.component';
 import { OwnersService } from '../../../../services/owners.service';
+import { Owner } from '../../../owners/models/owner';
+import { of } from 'rxjs';
 
-describe('ActionRequiredProposalComponent', () => {
-  let component: ActionRequiredProposalComponent;
-  let fixture: ComponentFixture<ActionRequiredProposalComponent>;
+describe('BudgetComponent', () => {
+  let component: BudgetComponent;
+  let fixture: ComponentFixture<BudgetComponent>;
   let mockOwnerService: Partial<OwnersService> = {};
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ActionRequiredProposalComponent],
+      imports: [BudgetComponent],
       providers: [
         {provide: OwnersService, useValue: mockOwnerService}
       ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ActionRequiredProposalComponent);
+    fixture = TestBed.createComponent(BudgetComponent);
     component = fixture.componentInstance;
   });
 

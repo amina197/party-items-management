@@ -1,14 +1,28 @@
+@use 'styles/utils' as ds;
+
 .detail-panel {
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 1rem 2rem;
 
   .panel-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     border-bottom: 1px solid #ddd;
     padding-bottom: 0.5rem;
+
+    .description {
+      line-height: 0;
+    }
+
+    .item-details {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: ds.$big-size;
+    }
 
     .close-btn {
       background: transparent;
@@ -18,9 +32,8 @@
     }
   }
 
-  .panel-body {
+
     .cost-owners {
-      margin-top: 1rem;
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -34,7 +47,7 @@
       font-size: 0.85rem;
       margin-right: 0.5rem;
     }
-  }
+
 }
 
 

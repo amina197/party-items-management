@@ -14,7 +14,6 @@ describe('CounterProposalFormComponent', () => {
 
     fixture = TestBed.createComponent(CounterProposalFormComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

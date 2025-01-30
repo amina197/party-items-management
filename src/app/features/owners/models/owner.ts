@@ -1,5 +1,5 @@
 export class Owner {
-  private readonly initialBudget = 100000;
+  readonly initialBudget = 100000;
 
   id: number;
   name: string;

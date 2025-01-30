@@ -20,7 +20,7 @@
 
         <tbody>
           @for (proposal of proposals(); track proposal.id) {
-            <tr (click)="selectProposal(proposal)">
+            <tr>
               <td>{{ proposal.createdAt | date:'dd/MM/yyyy' }}</td>
               <td>
                 <span class="status-badge" [ngClass]="proposal.status | statusToClass">
@@ -40,13 +40,6 @@
         </tbody>
       </table>
     </div>
-
-    @if (selectedProposal) {
-      <div class="proposal-details">
-        <button class="close-btn" (click)="closeProposal()">✖</button>
-        <app-proposal-readonly [proposal]="selectedProposal" [item]="item()"></app-proposal-readonly>
-      </div>
-    }
   }
 
 </div>

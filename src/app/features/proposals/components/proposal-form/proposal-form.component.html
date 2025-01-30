@@ -5,8 +5,9 @@
   <div class="form-content">
 
     <div class="ratios-section">
-      <h3>Payment ratio</h3>
+
       <div class="ratios-container">
+        <h3>Payment ratio</h3>
         @for (owner of item.owners; track owner.id; let i = $index) {
           <label class="ratio-label">
             <span>{{ owner.name }}</span>
