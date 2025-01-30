@@ -1,5 +1,5 @@
 <div class="proposal-history">
-  <h3>Proposals History</h3>
+  <h2>Proposals History</h2>
 
   @if (!proposals().length) {
     <div class="empty-msg">
@@ -7,48 +7,46 @@
     </div>
 
   } @else {
-    <div class="history-list">
 
-      @for (proposal of proposals(); track proposal.id) {
-        <div class="history-item">
-          <div class="history-header">
-            <span class="proposal-date">
-              {{ proposal.createdAt }}
-            </span>
-            <span class="proposal-status" [ngClass]="proposal.status">
-              {{ proposal.status }}
-            </span>
-          </div>
+    <div class="table-container">
+      <table class="proposal-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Payment ratios</th>
+          </tr>
+        </thead>
 
-          <div class="history-body">
-            <div class="ratios">
-              <strong>Ratios:</strong>
-
-              @for (owner of item().owners; track owner.id) {
-                <span>
-                  {{ owner.name }} => {{ proposal.paymentRatios[owner.id] }}%
+        <tbody>
+          @for (proposal of proposals(); track proposal.id) {
+            <tr (click)="selectProposal(proposal)">
+              <td>{{ proposal.createdAt | date:'dd/MM/yyyy' }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="proposal.status | statusToClass">
+                  {{ proposal.status }}
                 </span>
-              }
-            </div>
+              </td>
 
-            @if (proposal.comment) {
-              <div class="comment">
-                <strong>Comment:</strong> {{ proposal.comment }}
-              </div>
-            }
-
-            <div class="accepted-by">
-              <strong>Accepted by:</strong>
-              @for (owner of item().owners; track owner.id) {
-                <div>
-                  {{ owner.name }} => {{ proposal.acceptanceRecord[owner.id] }}
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      }
+              <td class="payment-ratios">
+                @for (owner of item().owners; track owner.id) {
+                  <span class="ratio-badge">
+                    {{ owner.name }} : {{ proposal.paymentRatios[owner.id] }}%
+                  </span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
+
+    @if (selectedProposal) {
+      <div class="proposal-details">
+        <button class="close-btn" (click)="closeProposal()">✖</button>
+        <app-proposal-readonly [proposal]="selectedProposal" [item]="item()"></app-proposal-readonly>
+      </div>
+    }
   }
 
 </div>

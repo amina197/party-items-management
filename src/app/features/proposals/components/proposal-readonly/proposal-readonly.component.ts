@@ -1,15 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { DatePipe, NgClass } from '@angular/common';
+import { AfterViewInit, Component, Input } from '@angular/core';
+import Chart from 'chart.js/auto';
 import { ProposalService } from '../../../../services/proposals/proposal.service';
+import { StatusToClassPipe } from '../../../../shared/pipes/status-to-class.pipe';
 import { PartyItem } from '../../../items/models/party-item';
 import { ItemProposal } from '../../models/item-proposal/item-proposal';
 
 @Component({
   selector: 'app-proposal-readonly',
-  imports: [],
+  imports: [NgClass, DatePipe, StatusToClassPipe],
   templateUrl: './proposal-readonly.component.html',
   styleUrl: './proposal-readonly.component.scss'
 })
-export class ProposalReadonlyComponent implements OnInit {
+export class ProposalReadonlyComponent implements AfterViewInit {
 
   @Input() proposal!: ItemProposal;
   @Input({ required: true }) item!: PartyItem;
@@ -23,5 +26,24 @@ export class ProposalReadonlyComponent implements OnInit {
         this.proposal = activeProposal;
       }
     }
+  }
+
+  public ngAfterViewInit(): void {
+    this.initChart();
+  }
+
+  private initChart(): void {
+    const ctx = document.getElementById(`chart-${this.proposal.id}`) as HTMLCanvasElement;
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: this.item.owners.map(owner => owner.name),
+        datasets: [{
+          data: this.item.owners.map(owner => this.proposal.paymentRatios[owner.id]),
+          backgroundColor: ['#2196f3', '#e67e22', '#27ae60', '#e74c3c', '#9b59b6']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
   }
 }

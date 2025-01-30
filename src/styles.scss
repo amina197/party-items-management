@@ -13,8 +13,66 @@ body {
   background-color: #ffffff;
   font-size: .9rem;
 
+  h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    color: #444;
+  }
+
   h5 {
     text-transform: capitalize;
     font-size: 1.125rem;
-    font-weight: 600;  }
+    font-weight: 600;
+  }
+
+  .proposal-card {
+    max-width: 600px;
+    background: #fff;
+    border-radius: 12px;
+    padding: ds.$big-size;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: ds.$big-size;
+  }
+
+  .chart-container {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .ratios-section {
+    background: #f9f9f9;
+    padding: ds.$medium-size;
+    border-radius: 8px;
+  }
+
+  .comment-section {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+  }
+
+  .badge-accepted {
+    background: ds.$success-color;
+    color: #fff;
+  }
+
+  .badge-pending {
+    background: ds.$warning-color;
+    color: #fff;
+  }
+
+  .badge-rejected {
+    background: ds.$error-color;
+    color: #fff;
+  }
 }

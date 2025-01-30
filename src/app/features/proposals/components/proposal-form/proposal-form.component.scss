@@ -1,15 +1,9 @@
-.proposal-form {
-  max-width: 600px;
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+@use 'styles/utils' as ds;
+
+.proposal-card {
 
   .form-title {
-    font-size: 1.5rem;
+    font-size: ds.$big-size;
     font-weight: bold;
     color: #333;
     text-align: center;
@@ -18,34 +12,29 @@
   .form-content {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: ds.$big-size;
   }
 
   .ratios-section {
     background: #f9f9f9;
-    padding: 1rem;
+    padding: ds.$medium-size;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-
-    h3 {
-      font-size: 1.2rem;
-      color: #444;
-    }
+    gap: ds.$medium-size;
   }
 
   .ratios-container {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: ds.$small-size;
 
     .ratio-label {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: #fff;
-      padding: 0.5rem;
+      padding: ds.$small-size;
       border-radius: 6px;
       border: 1px solid #ddd;
       font-size: 0.9rem;
@@ -63,20 +52,12 @@
   }
 
   .chart-container {
-    width: 100%;
-    height: 200px;
     background: #fff;
     border-radius: 8px;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding: ds.$medium-size;
   }
 
   .comment-section {
-    background: #f9f9f9;
-    padding: 1rem;
-    border-radius: 8px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -87,7 +68,7 @@
       padding: 0.75rem;
       border: 1px solid #ccc;
       border-radius: 6px;
-      font-size: 1rem;
+      font-size: ds.$medium-size;
       resize: vertical;
     }
   }
@@ -101,13 +82,13 @@
   .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 1rem;
+    gap: ds.$medium-size;
 
     .cancel-btn, .send-btn {
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem ds.$big-size;
       border-radius: 6px;
       border: none;
-      font-size: 1rem;
+      font-size: ds.$medium-size;
       cursor: pointer;
       transition: 0.2s ease;
     }

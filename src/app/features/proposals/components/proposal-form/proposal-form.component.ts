@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import Chart from 'chart.js/auto';
 import { StatusEnum } from '../../../../shared/enums/status.enum';
@@ -15,7 +15,7 @@ import { PaymentRatio } from '../../models/payment-ratio';
   templateUrl: './proposal-form.component.html',
   styleUrl: './proposal-form.component.scss'
 })
-export abstract class ProposalFormComponent implements OnInit {
+export abstract class ProposalFormComponent implements OnInit, AfterViewInit {
 
   @Input({ required: true }) item!: PartyItem;
   @Input({ required: true }) activeUser!: User;
@@ -34,8 +34,11 @@ export abstract class ProposalFormComponent implements OnInit {
 
   constructor(protected fb: FormBuilder) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.initForm();
+  }
+
+  public ngAfterViewInit(): void {
     this.initChart();
   }
 
@@ -151,15 +154,16 @@ export abstract class ProposalFormComponent implements OnInit {
       type: 'doughnut',
       data: {
         labels: this.item.owners.map(owner => owner.name),
-        datasets: [
-          { data: this.paymentRatios.value, backgroundColor: '#2196f3' }
-        ]
+        datasets: [{
+          data: this.paymentRatios.value,
+          backgroundColor: '#2196f3'
+        }]
       },
       options: { responsive: true, maintainAspectRatio: false }
     });
   }
 
   public onCancelProposal(): void {
-    this.proposalForm.reset();
+    this.proposalForm.reset({ onlySelf: true, emitEvent: false});
   }
 }

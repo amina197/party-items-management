@@ -1,30 +1,35 @@
-<div class="proposal-read-only">
-  <p>
-    Created by {{ proposal.createdByParty.name }} on
-    {{ proposal.createdAt }}
-  </p>
-  <strong>Ratios:</strong>
-  <div class="ratios">
-    @for (owner of item.owners; track owner.id) {
-      <span>
-        {{ owner.name }} => {{ proposal.paymentRatios[owner.id] }}%
-      </span>
-    }
+<div class="proposal-card">
+
+  <div class="proposal-header">
+    <h2>Active Proposal</h2>
+    <p class="proposal-meta">Created by <strong>{{ proposal.createdByParty.name }}</strong> on {{ proposal.createdAt | date: 'dd/MM/yyyy' }}</p>
+  </div>
+
+  <div class="ratios-section">
+    <h3>Payment ratios</h3>
+    <div class="chart-container">
+      <canvas id="chart-{{ proposal.id }}"></canvas>
+    </div>
   </div>
 
   @if (proposal.comment) {
-    <div>
-      <strong>Comment: </strong>{{ proposal.comment }}
+    <div class="comment-section">
+      <h3>Comment</h3>
+      <p>{{ proposal.comment }}</p>
     </div>
   }
 
-  <div class="acceptance-record">
-    <strong>Acceptance Record:</strong>
-    @for (owner of item.owners; track owner.id) {
-      <div>
-        {{ owner.name }} => {{ proposal.acceptanceRecord[owner.id] }}
-      </div>
-    }
+  <div class="acceptance-section">
+    <h3>Acceptance record</h3>
+    <ul class="acceptance-list">
+      @for (owner of item.owners; track owner.id) {
+        <li>
+          <span class="owner-name">{{ owner.name }}</span>
+          <span class="acceptance-status" [ngClass]="proposal.acceptanceRecord[owner.id] | statusToClass">
+            {{ proposal.acceptanceRecord[owner.id] }}
+          </span>
+        </li>
+      }
+    </ul>
   </div>
 </div>
-

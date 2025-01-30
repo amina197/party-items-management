@@ -1,58 +1,103 @@
 .proposal-history {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  padding: 1.5rem;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+}
+
+.table-container {
+  max-height: 400px;
+  overflow: auto;
   border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
 }
 
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.proposal-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+
+  thead {
+    position: sticky;
+    top: 0;
+    background: #f9f9f9;
+    z-index: 2;
+
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: bold;
+      border-bottom: 2px solid #ddd;
+    }
+  }
+
+  tbody tr {
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #ddd;
+    }
+  }
 }
 
-.history-item {
-  border: 1px solid #eee;
-  padding: 0.75rem;
-  border-radius: 4px;
-}
-
-.history-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
-}
-
-.proposal-date {
-  color: #666;
-}
-
-.proposal-status {
-  padding: 2px 6px;
-  border-radius: 4px;
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: bold;
 }
 
-.proposal-status.SENT {
-  background-color: #ff9800;
-}
-
-.proposal-status.PENDING {
-  background-color: #ff9800;
-}
-
-.proposal-status.ACCEPTED {
-  background-color: #4caf50;
-}
-
-.proposal-status.REJECTED {
-  background-color: #f44336;
-}
-
-.ratios {
+.payment-ratios {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 0.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.ratio-badge {
+  background: #2196f3;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.proposal-details {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  z-index: 10;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #666;
+
+  &:hover {
+    color: #333;
+  }
 }

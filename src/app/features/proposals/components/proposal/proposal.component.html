@@ -10,7 +10,6 @@
     }
 
     @case (itemStatusEnum.ACTION_REQUIRED) {
-      <h3>Proposal in progress</h3>
       <app-action-required-proposal [activeUser]="activeUser"
                                     [item]="item"
                                     (accepted)="onUpdateProposal()"
@@ -27,13 +26,11 @@
     }
 
     @case (itemStatusEnum.WAITING_FOR_OTHERS) {
-      <h3>Proposal in progress</h3>
-
       <app-proposal-readonly [item]="item"
       ></app-proposal-readonly>
     }
   }
 
-  <app-proposal-history [item]="item"></app-proposal-history>
+  <app-proposal-history [item]="item" [activeUser]="activeUser"></app-proposal-history>
 
 </div>
