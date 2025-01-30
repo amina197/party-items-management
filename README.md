@@ -32,14 +32,6 @@ The application uses Jest for testing. To execute the test suite, run:
 npm test
 ```
 
-## Available commands
-
-All commands are defined in the package.json file.
-• Start the app: npm start
-• Build the app: npm run build
-• Watch for file changes and rebuild: npm run watch
-• Run tests with Jest: npm test
-
 ## Technologies Used
 
     •	Angular 19 (Frontend framework)
